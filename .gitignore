@@ -1,0 +1,4 @@
+# Real brand data and generated work stay out of this public repo.
+marketing/
+*.docx
+.DS_Store

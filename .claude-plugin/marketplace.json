@@ -1,0 +1,14 @@
+{
+  "name": "ai-marketing-team",
+  "owner": {
+    "name": "Viktar"
+  },
+  "description": "A team of AI marketing agents for Claude: an SEO strategist and a content creator that share one brand brief and hand work to each other.",
+  "plugins": [
+    {
+      "name": "marketing-team",
+      "source": "./plugins/marketing-team",
+      "description": "SEO agent + content agent with skills for audits, keyword research, content gaps, blog articles, landing pages, page refreshes, and LinkedIn / X / Facebook posts."
+    }
+  ]
+}

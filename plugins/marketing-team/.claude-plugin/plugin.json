@@ -1,0 +1,20 @@
+{
+  "name": "marketing-team",
+  "displayName": "AI Marketing Team",
+  "version": "0.1.0",
+  "description": "A brand-aware marketing team for Claude: an SEO agent that audits, researches and finds content gaps, and a content agent that writes blog articles, landing pages, page refreshes and social posts for LinkedIn, X and Facebook.",
+  "author": {
+    "name": "Viktar"
+  },
+  "license": "MIT",
+  "keywords": [
+    "marketing",
+    "seo",
+    "content",
+    "social-media",
+    "linkedin",
+    "agents"
+  ],
+  "icon": "./.claude-plugin/icon.png",
+  "repository": "https://github.com/viktar-m/marketing-team"
+}
