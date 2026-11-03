@@ -27,7 +27,7 @@ Write each platform's version natively. Don't paste the same text everywhere —
 3. **Write the body** in the brand voice, following the platform guide's format.
 4. **Close with one CTA** suited to the platform goal in the brief: comment, click, save, sign up. One ask, not three.
 5. **Add hashtags** per the platform guide, starting with the brief's own hashtags.
-6. **Suggest the visual:** image, carousel or short video, with a one-line creative description and alt text.
+6. **Plan the visual:** image, carousel or short video, with a one-line creative description and alt text. For anything beyond a photo the user supplies, write a brief `to: design-agent` (one brief for all posts in the request) with the platform, size, on-image text and message.
 7. **Self-review:**
    - [ ] The hook works on its own, before the "see more" cut
    - [ ] One clear point and one CTA

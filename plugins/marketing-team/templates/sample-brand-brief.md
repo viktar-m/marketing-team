@@ -60,12 +60,28 @@
 ## 7. Proof and assets
 - **Approved stats:** none yet — mark any statistic [VERIFY]
 - **Customer stories:** none approved yet
-- **Assets:** green and cream palette; photos of real home kitchens, not studio food shots
+- **Visual identity:** green and cream palette; photos of real home kitchens, not studio food shots (full detail in `marketing/design/brand-kit.md`)
 
 ## 8. Calls to action
 - **Primary:** Start planning free — https://acmepantry.example/signup
 - **Secondary:** See Plus features — https://acmepantry.example/pricing
 
-## 9. Rules and red lines
+## 9. Paid and sales
+- **Ad platforms in use:** Meta Ads (parents), Google Ads (search for "meal planning app")
+- **Budget and goals:** small test budget; goal is Plus trials under a target cost per trial [VERIFY target]
+- **Sales motion:** self-serve app; partnerships team sells to grocery chains and employers
+- **Release rhythm:** feature release roughly monthly
+
+## 10. AI visibility
+- **Brand names and aliases:** Acme Pantry, AcmePantry, acmepantry.example
+- **Competitors to benchmark:** Competitor A (competitor-a.example), Competitor B (competitor-b.example)
+- **Questions customers ask AI assistants:**
+  - What's the best meal planning app for families?
+  - How can I plan meals using what's already in my fridge?
+  - Which app makes a shopping list from a meal plan?
+  - How do I stop wasting food at home?
+  - Is there a meal planning app that works for a shared household?
+
+## 11. Rules and red lines
 - No health, weight-loss or medical claims
 - No claims about exact money or food saved unless sourced

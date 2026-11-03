@@ -63,4 +63,5 @@ Score each issue: **impact** (high / medium / low) × **effort** (low / medium /
    - Findings table: page | issue | impact | effort | fix
    - Quick wins the user can do in minutes (titles, meta descriptions, alt text) written out in full, ready to paste
    - What couldn't be checked and why
-2. **Content briefs** for fixes that need writing — a refresh, a new section, a new page — using `${CLAUDE_PLUGIN_ROOT}/templates/content-brief.md`. At most 5 per run, highest priority first.
+2. **Dashboard** `marketing/dashboards/seo-audit.html` per `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`: health score tiles, issues by impact, clicks and position trends if data is connected, and the action list.
+3. **Briefs** (`to: web-content-agent`) for fixes that need writing — a refresh, a new section, a new page — using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`. At most 5 per run, highest priority first.

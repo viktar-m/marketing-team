@@ -50,11 +50,22 @@ For each segment:
 ## 7. Proof and assets
 - **Approved stats and claims:** with sources
 - **Customer stories we may name:**
-- **Brand assets:** logo, colours, image style notes
+- **Visual identity:** summary only — full detail lives in `marketing/design/brand-kit.md` (logo files, colours, fonts, image style)
 
 ## 8. Calls to action
 - **Primary CTA:** e.g., Start free trial — URL
 - **Secondary CTAs:** e.g., Book a demo, Download guide
 
-## 9. Rules and red lines
+## 9. Paid and sales
+- **Ad platforms in use:** Google Ads / LinkedIn Ads / Meta Ads
+- **Typical budget range and goals:** e.g., leads at under $X CPA
+- **Sales motion:** self-serve, sales-led, partner; who the sales team sells to
+- **Release rhythm:** how often the product ships notable updates
+
+## 10. AI visibility
+- **Brand names and aliases** as people write them (including common misspellings)
+- **Competitors to benchmark** (names + domains)
+- **Questions our customers ask AI assistants** — 10–30 real questions, in their words
+
+## 11. Rules and red lines
 - Legal or compliance requirements, claims we may not make, topics to avoid

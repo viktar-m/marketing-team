@@ -1,0 +1,23 @@
+{
+  "brand": {
+    "name": "Your Brand",
+    "aliases": ["YourBrand", "yourbrand.com"],
+    "domain": "yourbrand.com"
+  },
+  "competitors": [
+    { "name": "Competitor A", "aliases": [], "domain": "competitor-a.com" },
+    { "name": "Competitor B", "aliases": [], "domain": "competitor-b.com" }
+  ],
+  "prompts": [
+    { "id": "best-tool", "prompt": "What is the best <category> for <audience>?", "topic": "category", "intent": "commercial" },
+    { "id": "how-to", "prompt": "How do I <job the product does>?", "topic": "use-case", "intent": "informational" },
+    { "id": "vs", "prompt": "<Your Brand> vs <Competitor A>: which is better for <use case>?", "topic": "comparison", "intent": "commercial" }
+  ],
+  "runs_per_prompt": 1,
+  "engines": {
+    "chatgpt": { "enabled": true, "model": "gpt-5-mini" },
+    "perplexity": { "enabled": true, "model": "sonar" },
+    "gemini": { "enabled": true, "model": "gemini-2.5-flash" },
+    "claude": { "enabled": true, "model": "claude-sonnet-5-5" }
+  }
+}

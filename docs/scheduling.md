@@ -1,30 +1,26 @@
 # Recurring routines
 
-The `team-lead` skill defines four routines. Set each one up as a scheduled task in Claude (ask Claude: "schedule this every Monday at 8:00") or in Claude Code. Each run starts in a fresh session, so the prompts below are self-contained and point to the workspace files.
+Routines are defined in the `team-lead` skill. Set each one up as a scheduled task in Claude, or ask Claude to "schedule the weekly SEO routine". Each run starts fresh and works from the workspace files. In a git workspace, each run pulls first and commits and pushes at the end.
 
-| Routine | Suggested schedule | What happens |
-|---------|-------------------|--------------|
-| `weekly-seo` | Monday morning | Audit of commercial and recently changed pages; up to 3 fixes written |
-| `weekly-social` | Friday | Next week's LinkedIn / X / Facebook posts drafted into `marketing/calendar/` |
-| `monthly-gaps` | 1st of the month | Competitor gap analysis + keyword research; up to 3 new pieces written |
-| `monthly-refresh` | 15th of the month | The 3 pages most in need of a refresh are refreshed |
+| Routine | Suggested time | What happens |
+|---------|----------------|--------------|
+| AI visibility tracking | daily (GitHub Action, not Claude) | Asks the AI engines your questions and records the results. See [ai-visibility.md](ai-visibility.md) |
+| `weekly-ai-visibility` | Monday | Sentiment, diagnosis of lost questions, up to 5 briefs |
+| `weekly-seo` | Tuesday | Audit of commercial and recently changed pages; up to 3 briefs completed |
+| `weekly-social` | Thursday | Next week's posts and the graphics for them |
+| `weekly-ads` | Friday | Ad performance review and recommended changes (only if ads are running) |
+| `monthly-gaps` | 1st | Competitor gap analysis and keyword research; up to 3 briefs completed |
+| `monthly-refresh` | 15th | The 3 pages most in need of a refresh, refreshed |
+| `quarterly-strategy` | first week of the quarter | Strategy files reviewed and updated against results |
 
-## Prompts
+Every routine ends by refreshing the Marketing HQ dashboard.
 
-**weekly-seo**
-> Use the marketing-team `team-lead` skill to run the `weekly-seo` routine for the project in this folder. Read `marketing/brand-brief.md` first. Save the audit to `marketing/reports/`, have the content agent complete the top 3 briefs, and finish with a short summary of findings, outputs, and anything that needs my review.
+## Prompt pattern
 
-**weekly-social**
-> Use the marketing-team `team-lead` skill to run the `weekly-social` routine: plan and draft next week's posts for LinkedIn, X and Facebook into `marketing/calendar/`, based on `marketing/brand-brief.md` and recent entries in `marketing/content-inventory.md`. Finish with the overview table and anything that needs my input.
-
-**monthly-gaps**
-> Use the marketing-team `team-lead` skill to run the `monthly-gaps` routine against the competitors in `marketing/brand-brief.md`. Save the reports to `marketing/reports/`, have the content agent complete the top 3 briefs, and summarise what was found and produced.
-
-**monthly-refresh**
-> Use the marketing-team `team-lead` skill to run the `monthly-refresh` routine: pick the 3 pages most in need of a refresh, write refresh briefs, have the content agent refresh them, and summarise the changes and what I should check before publishing.
+> Use the marketing-team `team-lead` skill to run the `<routine>` routine for the workspace in `<folder or repo>`. Pull the latest files first, follow `marketing/brand-brief.md` and the strategy files, complete at most 3 briefs, commit and push the results, refresh the HQ, and finish with a short summary of what was done and what needs my review.
 
 ## Tips
 
-- Nothing is published automatically. Routines produce drafts and reports; you review and publish.
-- Connect Search Console / Analytics before scheduling SEO routines — measured data makes the weekly audit far more useful.
-- If you're away for a while, leftover briefs stay at `status: ready` and the next run picks them up.
+- Nothing is published, posted or changed in ad accounts automatically. Routines produce drafts, reports and recommendations for you to review.
+- Connect Search Console, Analytics and your ad platforms before scheduling the SEO and ads routines.
+- If you're away for a while, briefs stay `ready` and the next run picks them up. The HQ shows anything overdue.

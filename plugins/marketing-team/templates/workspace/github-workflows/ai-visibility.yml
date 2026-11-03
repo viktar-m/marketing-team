@@ -1,0 +1,55 @@
+# Daily AI visibility tracking for a marketing workspace repository.
+# Copy to .github/workflows/ai-visibility.yml in the workspace repo.
+# API keys live in the repo's Actions secrets (Settings > Secrets and variables > Actions):
+#   OPENAI_API_KEY (required for ChatGPT), optional PERPLEXITY_API_KEY, GEMINI_API_KEY, ANTHROPIC_API_KEY.
+# Engines without a key are skipped.
+name: AI visibility tracker
+
+on:
+  schedule:
+    - cron: "17 5 * * *"   # daily at 05:17 UTC
+  workflow_dispatch: {}     # "Run workflow" button for a manual run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ai-visibility
+  cancel-in-progress: false
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the workspace
+        uses: actions/checkout@v4
+
+      - name: Check out the marketing team (tracker script)
+        uses: actions/checkout@v4
+        with:
+          repository: viktar-m/marketing-team   # change if you use a fork
+          path: .team
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Ask the AI engines
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 .team/plugins/marketing-team/scripts/ai_visibility.py run --dir marketing/ai-visibility
+
+      - name: Build the dashboard
+        run: python3 .team/plugins/marketing-team/scripts/ai_visibility.py report --dir marketing/ai-visibility --out marketing/dashboards/ai-visibility.html
+
+      - name: Save results
+        run: |
+          git config user.name "ai-visibility-tracker"
+          git config user.email "ai-visibility-tracker@users.noreply.github.com"
+          git add marketing/ai-visibility marketing/dashboards/ai-visibility.html
+          git diff --staged --quiet || git commit -m "ai-visibility: daily tracking $(date -u +%F)"
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done

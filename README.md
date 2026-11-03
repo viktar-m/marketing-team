@@ -1,100 +1,109 @@
 # AI Marketing Team for Claude
 
-A two-agent marketing team that plugs into Claude. An **SEO agent** decides what the site needs; a **content agent** writes it. Both read one **brand brief**, so everything they produce sounds like your company — and the same team can be set up for any company by swapping the brief.
+A seven-agent marketing team that plugs into Claude. Each agent owns one job: strategy, SEO and AI visibility, web content, social and video, design, paid ads, and go-to-market. They all read one **brand brief**, follow one set of **strategy rules**, and hand work to each other through **briefs**. You can set up the same team for any company by swapping the brief.
+
+![Marketing HQ dashboard](docs/images/marketing-hq.png)
 
 ```
-You: "Get more traffic to our pricing page."
+You: "We launch v2 on the 20th."
 
-Team lead ─▶ SEO agent      audits the page, researches keywords, finds gaps
-                 │           writes 3 prioritised content briefs
-                 ▼
-             Content agent  refreshes the pricing page, writes a supporting
-                            article, and cuts it into LinkedIn / X / Facebook posts
+Team lead ─▶ GTM agent       tiers the launch, writes messaging, builds the timeline
+                │             briefs every agent ▼
+                ├─▶ Web content   feature page + launch article (with internal links)
+                ├─▶ Social & video  launch posts + video brief for Claude Motion
+                ├─▶ Design        launch graphics and ad creatives in every size
+                ├─▶ Ads           LinkedIn + Meta campaign plan and copy
+                └─▶ Strategist    reviews everything against brand and strategy
 ```
 
-## What's inside
+## The team
 
-| Agent | Role | Skills |
+| Agent | Owns | Skills |
 |-------|------|--------|
-| **SEO agent** | Strategy: what to create, fix or refresh — and why | `seo-audit` · `keyword-research` · `content-gap` |
-| **Content agent** | Production: publish-ready content in the brand voice | `blog-create` · `page-create` · `page-refresh` · `social-post` · `social-repurpose` · `social-calendar` |
+| **Strategist** | Marketing and channel strategy, campaigns and promos, the rules every agent follows, final review | `strategy` · `campaign-plan` · `brand-review` |
+| **SEO & AI visibility** | What to create or fix, based on search data and how AI engines answer customer questions | `seo-audit` · `keyword-research` · `content-gap` · `ai-visibility` · `internal-linking` |
+| **Web content** | Blog articles, new pages, page refreshes, always with internal linking | `blog-create` · `page-create` · `page-refresh` |
+| **Social & video** | LinkedIn, X and Facebook posts, repurposing, the social calendar, video briefs | `social-post` · `social-repurpose` · `social-calendar` · `video-brief` |
+| **Design** | Brand kit and every graphic: social, blog, pages, ads, launches, promos | `brand-kit` · `graphic` |
+| **Ads** | Google, LinkedIn and Meta campaign plans, ad copy and creative, optimisation | `ad-campaign` · `ad-creative` · `ad-optimization` |
+| **GTM & sales** | Product launches and sales enablement | `launch-plan` · `sales-enablement` |
 
-Plus two team skills:
+Team skills: **`team-lead`** routes requests and runs the routines · **`brand-setup`** writes the brand brief · **`hq`** shows the Marketing HQ dashboard.
 
-- **`team-lead`** — routes any marketing request to the right agent, relays SEO briefs to the content agent, and runs the recurring routines
-- **`brand-setup`** — builds the brand brief from your website and a few questions
+## Highlights
+
+### AI visibility (AEO / GEO)
+A tracker asks ChatGPT, Perplexity, Gemini and Claude the questions your customers ask, every day, through their APIs. It records whether your brand and your competitors are mentioned, in what order, and which sources are cited. The SEO agent reviews the answers each week: it scores sentiment, works out why competitors win particular questions, and writes briefs to fix that. The fixes can be pages that answer those questions in a form AI engines can quote, earned mentions on the sources the engines cite, or corrections where AI answers are wrong.
+
+![AI visibility dashboard](docs/images/ai-visibility.png)
+
+### Internal linking built into every page
+Every article, new page and refresh suggests the links it should contain, and lists which existing pages should link to it, with the exact sentence to change. The suggestions come from a site index plus search results.
+
+### Visual output
+Reports come with self-contained dashboards (light and dark mode, colour-blind-safe palette, tooltips, a table view). The Marketing HQ shows the team's work as a board: open briefs by status and agent, deadlines, output per week, AI share of voice and strategy review dates. The designer renders graphics to PNG at exact platform sizes.
 
 ## How it works
 
-1. **One brand brief** (`marketing/brand-brief.md`) holds product facts, audience, positioning, voice, keywords, social platforms, CTAs and red lines. Agents read it before every task. Nothing brand-specific is hard-coded in the skills.
-2. **Routing by description.** Claude picks the agent and skill whose description matches the request. Ask in plain words — "audit our blog", "write a post about X", "plan next week's posts" — or call a skill by name, e.g. `/marketing-team:seo-audit`.
-3. **Handoffs through files.** The SEO agent writes content briefs to `marketing/briefs/`; the team lead hands them to the content agent; the content agent marks them done. Everything is traceable.
-4. **Team memory.** `marketing/content-inventory.md` records every piece produced or refreshed, so the team doesn't repeat itself and can link new work to old.
-5. **Recurring work.** Weekly SEO audits, weekly social calendars, monthly gap analyses and monthly refreshes run as scheduled tasks. See [docs/scheduling.md](docs/scheduling.md).
+1. **Brand brief:** `marketing/brand-brief.md` holds product facts, audiences, positioning, voice, keywords, platforms, CTAs, the AI visibility questions and red lines.
+2. **Strategy rules:** `marketing/strategy/*.md` are short, checkable rules written by the strategist. Every agent reads the ones for its channel.
+3. **Routing by description:** Claude matches each request to an agent and skill. Ask in plain words, or call a skill directly, e.g. `/marketing-team:seo-audit`.
+4. **Briefs as handoffs:** agents write briefs to `marketing/briefs/`, addressed to the agent that should act on them. The team lead passes them on in priority order.
+5. **Team memory:** `marketing/content-inventory.md` logs everything the team produces.
+6. **Routines:** weekly AI visibility, SEO, social and ads reviews, plus monthly gap and refresh runs, run as scheduled tasks. See [docs/scheduling.md](docs/scheduling.md).
 
-More detail in [docs/architecture.md](docs/architecture.md).
+Details: [docs/architecture.md](docs/architecture.md).
 
 ## Install
 
-### Claude Code
+**Claude app:** Customize → Plugins → **+** → Add marketplace → `viktar-m/marketing-team`, then install **marketing-team**. Skills work in chat. The agents run in Cowork, so use the full team in a Cowork project with a folder or workspace connected.
 
+**Claude Code:**
 ```
 /plugin marketplace add viktar-m/marketing-team
 /plugin install marketing-team@ai-marketing-team
 ```
 
-### Claude app (desktop / web)
-
-Zip the `plugins/marketing-team` folder and upload it as a plugin in the Claude app's settings. Agents and file-based handoffs work best where Claude has a working folder (Claude Code, or a Claude desktop task with a folder connected).
-
 ## Get started
 
-1. **Create the brand brief:** "Set up the marketing team for <your website URL>." The `brand-setup` skill drafts `marketing/brand-brief.md` and asks a few questions. Want to try it first? Copy [`templates/sample-brand-brief.md`](plugins/marketing-team/templates/sample-brand-brief.md) (a fictional company) to `marketing/brand-brief.md`.
-2. **Connect your data (optional but recommended):** Google Search Console, Analytics, Ahrefs or Semrush. Without them, the SEO agent works from public data and labels its numbers as estimates.
-3. **Give the team a task.** Examples:
-   - "Run an SEO audit of our blog."
-   - "Where are our competitors beating us?"
-   - "Refresh this page: https://…"
-   - "Write a blog article about <topic>, then turn it into posts."
-   - "Plan next week's LinkedIn, X and Facebook posts."
-4. **Schedule the routines** in [docs/scheduling.md](docs/scheduling.md).
+1. **Brand brief:** "Set up the marketing team for <your website>." To try the team first, copy [`templates/sample-brand-brief.md`](plugins/marketing-team/templates/sample-brand-brief.md), which describes a fictional company, to `marketing/brand-brief.md`.
+2. **Strategy and brand kit:** "Write our marketing strategy." Then "Set up our brand kit."
+3. **Connect your data:** Search Console, Analytics and your ad platforms. Without them, agents label their numbers as estimates.
+4. **AI visibility:** "Set up AI visibility tracking." See [docs/ai-visibility.md](docs/ai-visibility.md) for the API keys.
+5. **Give the team work:** "Plan the v2 launch", "Audit our blog", "Next week's posts", "Why is our CPA up?", "Show me the HQ".
+6. **Schedule the routines:** [docs/scheduling.md](docs/scheduling.md).
 
 ## Workspace
 
-The team works in a `marketing/` folder in your project:
+The team works in a `marketing/` folder. That can be a local folder or a **private git repository**, which scheduled runs and the daily AI visibility workflow can update without your computer. This public repo git-ignores `marketing/`: the framework is public, and your brand data stays private.
 
 ```
 marketing/
-├── brand-brief.md
-├── content-inventory.md
-├── briefs/          SEO agent → content agent
-├── content/         blog/ · pages/ · refreshes/ · social/
-├── reports/         audits, keyword research, gap analyses
-└── calendar/        weekly social calendars
+├── brand-brief.md        strategy/          briefs/
+├── content-inventory.md  campaigns/         launches/
+├── content/              design/            ads/
+├── sales/                ai-visibility/     site/
+├── reports/              calendar/          dashboards/  (hq.html)
 ```
-
-`marketing/` is git-ignored here on purpose: the framework is public, your brand data and drafts stay private.
 
 ## Design principles
 
-- **Strategy and production are separate agents.** SEO decides what and why; content decides how. Neither does the other's job.
-- **No invented facts.** Unverifiable claims are marked `[VERIFY]` and listed for a human check before publishing.
-- **Autonomous by default.** Agents make reasonable choices and state them, rather than stopping for approval at every step.
-- **Brand-agnostic.** Swap the brief, get a different company's team.
+- **Deciding is separate from making.** The strategist, SEO and GTM agents decide what to do. The web, social, design and ads agents produce it.
+- **No invented facts.** Unverified claims are marked `[VERIFY]` and listed for a human to check.
+- **Humans approve spend and publishing.** The ads agent recommends changes and never changes live campaigns. Nothing is published automatically.
+- **Brand-agnostic.** Nothing about a specific company is built into the agents or skills.
 
 ## Customise
 
-- **Add a platform** (e.g., Instagram): add `skills/social-post/platforms/instagram.md` and mention it in the `social-post` skill.
-- **Add an agent** (e.g., email marketing): add `agents/email-agent.md`, its skills under `skills/`, and a row in `team-lead`.
-- **Change a standard** for every agent: edit `templates/conventions.md`.
+- New platform: add a guide in `skills/social-post/platforms/` and size rows in the `graphic` skill.
+- New agent (e.g., email): add `agents/<name>.md` and its skills, a row in `team-lead`, and the agent's name in `templates/brief.md`.
+- Team-wide rules: `templates/conventions.md`. Visual style: `templates/dashboards.md`.
 
 ## Roadmap
-
-- [ ] Email agent: newsletters, nurture sequences
-- [ ] Analytics agent: monthly performance reports from connected data
-- [ ] Paid social / ads copy
+- [ ] Email agent: newsletters, nurture and onboarding sequences
+- [ ] Analytics agent: cross-channel performance reports
 - [ ] Instagram and YouTube platform guides
+- [ ] Interactive HQ with filters and drill-down
 
 ## License
-
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

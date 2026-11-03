@@ -30,7 +30,7 @@ The page URL or pasted copy (required — ask if neither is provided). Optional:
    - **Tutorial / support page:** what you'll achieve → prerequisites → numbered steps → troubleshooting → next steps
    - **Comparison page:** short verdict → criteria → fair comparison table → when to choose each → CTA
    - **Informational page:** direct answer → explanation → examples → related questions → next step
-5. **Rewrite.** Answer first. Keep strong existing sentences. Add the missing coverage. Improve headings so they could stand alone as answers in AI overviews. Add internal links (3–5) from the inventory and site.
+5. **Rewrite.** Answer first. Keep strong existing sentences. Add the missing coverage. Improve headings so they could stand alone as answers in AI overviews. Then run `marketing-team:internal-linking`: add or fix links out, and check whether the site's important pages link to this one — propose the missing links in, with exact edits.
 6. **Metadata:** new title and meta description (only if better), structured data recommendation.
 7. **Self-review:**
    - [ ] Every change has a reason in the change log
@@ -46,8 +46,9 @@ Save to `marketing/content/refreshes/YYYY-MM-DD-<slug>/refresh.md` with these se
 2. **Direction** — what the refresh changes and why
 3. **Refreshed page copy** — publish-ready, with front matter (title, meta_description, url)
 4. **Change log** — section by section: kept / changed / added / removed, and why
-5. **SEO and AI visibility notes** — keyword coverage, headings, schema, internal links
-6. **To verify** — claims, figures and screenshots a human must check
-7. **Implementation notes** — redirects, image updates, anything for the person publishing
+5. **SEO and AI visibility notes** — keyword coverage, headings, schema
+6. **Internal linking** — links out added or changed; links in to add on other pages (page, current text, new text, anchor)
+7. **To verify** — claims, figures and screenshots a human must check
+8. **Implementation notes** — redirects, image updates, anything for the person publishing
 
 Then add a row to the content inventory with status `refreshed` and, if you worked from a brief, close it.

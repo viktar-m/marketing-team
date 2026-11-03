@@ -25,9 +25,10 @@ Competitors from the brief (or ones the user names), and the topic area to compa
 
 ## Output
 
-1. **Report** at `marketing/reports/YYYY-MM-DD-content-gap.md`:
+1. **Dashboard** `marketing/dashboards/content-gap.html` per `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`: coverage by topic, us vs each competitor, gaps sized by relevance and demand.
+2. **Report** at `marketing/reports/YYYY-MM-DD-content-gap.md`:
    - Summary: competitors compared, data sources, top 5 gaps and the action for each
    - Gap table: gap | type (missing / outranked / thin / format) | competitor example URL | our page (if any) | relevance | demand | effort | action
    - Topics where we're ahead — worth protecting
-2. Run `keyword-research` on the top gaps when primary keywords aren't obvious.
-3. **Content briefs** for the top gaps (at most 5), using `${CLAUDE_PLUGIN_ROOT}/templates/content-brief.md`. Refresh briefs for thin or stale pages; new-page or blog briefs for missing topics.
+3. Run `keyword-research` on the top gaps when primary keywords aren't obvious.
+4. **Briefs** (`to: web-content-agent`) for the top gaps (at most 5), using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`. Refresh briefs for thin or stale pages; new-page or blog briefs for missing topics.

@@ -22,7 +22,8 @@ The period (default: the next ISO week, Monday to Sunday). Optional: launches, e
 3. **Balance the pillars.** Spread posts across the brief's content pillars so no pillar takes more than about 40% of the week. Keep promotional posts (product, offers) to about one in four.
 4. **Assign each slot:** day, platform, pillar, format, angle, source (if any). Don't put the same message on all three platforms on the same day — stagger and adapt.
 5. **Draft every post** with the `social-post` workflow and platform guides (`${CLAUDE_PLUGIN_ROOT}/skills/social-post/platforms/`).
-6. **Self-review:** cadence met; pillars balanced; no two posts in a row with the same hook style; all links and facts checked or marked `[VERIFY]`.
+6. **Visuals:** write one brief `to: design-agent` covering every graphic the week needs (post, platform, size, on-image text), so the set is consistent. Write `video-brief` requests for any video slots.
+7. **Self-review:** cadence met; pillars balanced; no two posts in a row with the same hook style; all links and facts checked or marked `[VERIFY]`.
 
 ## Output
 

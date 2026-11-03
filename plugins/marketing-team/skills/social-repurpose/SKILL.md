@@ -1,6 +1,6 @@
 ---
 name: social-repurpose
-description: 'Turn a long piece — a blog article, web page, page refresh, report, webinar transcript, or product announcement — into a set of native social posts for LinkedIn, X and Facebook, with different angles spread over days or weeks. Use for "turn this into posts", "promote this article", "social cut-downs", or after the content agent publishes a new piece.'
+description: 'Turn a long piece — a blog article, web page, page refresh, report, webinar transcript, or product announcement — into a set of native social posts for LinkedIn, X and Facebook, with different angles spread over days or weeks. Use for "turn this into posts", "promote this article", "social cut-downs", or after a new article, page or release is published.'
 ---
 
 # Social repurpose

@@ -34,5 +34,5 @@ Rank clusters by business relevance first, then demand, then ease. A small, high
    - Summary: seed, data sources, top 5 clusters and the recommended action for each
    - Cluster table: cluster | primary keyword | secondary keywords | intent | demand | difficulty | relevance | existing page | action
    - Full keyword list as an appendix
-2. **Content briefs** for the top clusters (at most 5), using `${CLAUDE_PLUGIN_ROOT}/templates/content-brief.md`.
+2. **Briefs** (`to: web-content-agent`) for the top clusters (at most 5), using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`.
 3. If any recommended primary keywords belong in the brand brief's target keywords, suggest adding them.

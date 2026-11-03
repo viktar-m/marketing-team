@@ -27,8 +27,10 @@ Defaults: audience = the brief's main segment; length = 1,200–1,800 words; CTA
    - Mention the product only where it genuinely helps the reader do the thing the article is about — usually once or twice, plus the CTA.
    - Short paragraphs (1–4 sentences); lists and tables where they make scanning easier.
    - Sentence-level clarity: active voice, specific verbs, no filler openings ("In today's fast-paced world…").
-5. **Optimise:** primary keyword in the title, H1, intro and at least one H2, naturally. Cover secondary keywords and related questions. Add 3–5 internal links with descriptive anchors and 2–5 external links to credible sources.
-6. **Self-review** with the checklist below. Fix, don't just note.
+5. **Optimise:** primary keyword in the title, H1, intro and at least one H2, naturally. Cover secondary keywords and related questions. Add 2–5 external links to credible sources.
+6. **Internal linking:** Run `marketing-team:internal-linking` (Steps 1–4): write the links out into the draft, and list the existing pages that should link to this article, with the exact edits.
+7. **Graphics:** write one brief `to: design-agent` for the cover image and any diagrams the article needs (purpose, message, sizes, placement).
+8. **Self-review** with the checklist below. Fix, don't just note.
 
 ## Checklist
 
@@ -40,6 +42,7 @@ Defaults: audience = the brief's main segment; length = 1,200–1,800 words; CTA
 - [ ] Competitors and alternatives are described fairly
 - [ ] Each section has something concrete; nothing could be cut without loss
 - [ ] Internal and external links work and use descriptive anchor text
+- [ ] At least 3 existing pages are proposed to link to this article, with exact edits
 - [ ] The CTA matches the brief and fits the reader's stage
 
 ## Output
@@ -64,8 +67,8 @@ word_count: <n>
 
 ## Publishing notes
 - **Audience and angle:** <one line each>
-- **Internal links used:** <list>
-- **Suggested images:** <2–4 ideas with alt text; a cover image description>
+- **Internal linking:** links out (anchor → URL) and links in (page, current text, new text, anchor)
+- **Graphics:** design brief path; alt text for each image
 - **Schema:** Article (+ FAQ if the article has a FAQ section)
 - **Social cut-downs:** offer `social-repurpose`
 - **To verify before publishing:** <list, or "nothing">

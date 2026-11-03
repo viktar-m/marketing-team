@@ -1,66 +1,84 @@
 # Team conventions
 
-Every agent and skill in the marketing team follows these rules. They keep the work consistent, let the agents hand work to each other, and let the team remember what it has already done.
+Every agent and skill in the marketing team follows these rules. They keep the work consistent, let agents hand work to each other, and let the team remember what it has done.
 
-## 1. The brand brief is the source of truth
+## 1. Read before you work
 
-All brand facts live in one file: `marketing/brand-brief.md` in the user's project folder.
+Before any task, read:
 
-- Read it before any task. Use its voice, audience, positioning, terminology, keywords and links.
-- In a claude.ai chat with no project folder, look for the brief in the Project's knowledge files instead.
-- If no brief exists: for a quick task, go ahead, state the assumptions you made at the top of the output, and suggest running the `brand-setup` skill. For larger work (audits, multi-piece campaigns, page rewrites), stop and offer `brand-setup` first — guessing a brand at scale wastes the user's time.
-- Never write brand facts into skills or agents. If you learn a durable fact during a task (a new product feature, a banned phrase), suggest adding it to the brief.
+1. **The brand brief** — `marketing/brand-brief.md` (in a claude.ai chat with no folder, the Project's knowledge files). Product facts, audience, positioning, voice, terminology, CTAs, red lines.
+2. **The strategy file for your channel** — `marketing/strategy/`. `marketing-strategy.md` applies to everyone; then `seo.md`, `content.md`, `social.md`, `paid.md` or `email.md` for your area. Strategy decides priorities, targets and rules; follow it. If your work would break a strategy rule, say so instead of quietly deviating.
+3. **The brand kit** for anything visual — `marketing/design/brand-kit.md`.
+4. **The brief you were handed**, if any — it overrides defaults.
+
+If the brand brief is missing: for a quick task, go ahead, state your assumptions at the top of the output, and suggest `brand-setup`. For larger work, stop and offer `brand-setup` first. If a strategy file is missing, work from the brand brief and mention that the strategist can create one.
+
+Never hard-code brand facts into skills or agents. When you learn a durable fact during a task, suggest adding it to the brief.
 
 ## 2. Workspace layout
 
 ```
 marketing/
-├── brand-brief.md              # who we are, how we sound, who we sell to
-├── content-inventory.md        # every piece the team has produced or refreshed
-├── briefs/                     # content briefs (SEO agent → content agent)
-│   └── YYYY-MM-DD-<slug>.md
+├── brand-brief.md
+├── content-inventory.md          # everything produced or refreshed
+├── strategy/                     # strategist owns
+│   ├── marketing-strategy.md
+│   └── seo.md · content.md · social.md · paid.md · email.md
+├── briefs/                       # all handoffs between agents
+├── campaigns/<slug>/             # campaign and promo plans
+├── launches/<slug>/              # product launch kits
+├── site/site-index.md            # page index used for internal linking
 ├── content/
-│   ├── blog/YYYY-MM-DD-<slug>/
-│   ├── pages/YYYY-MM-DD-<slug>/
-│   ├── refreshes/YYYY-MM-DD-<slug>/
-│   └── social/YYYY-MM-DD-<slug>/
-├── reports/                    # audits, gap analyses, keyword research
-│   └── YYYY-MM-DD-<report-type>.md
-└── calendar/
-    └── YYYY-Www.md             # weekly social calendar (ISO week)
+│   ├── blog/ · pages/ · refreshes/ · social/ · video/
+├── design/
+│   ├── brand-kit.md
+│   ├── assets/                   # logos, photos, screenshots the user supplies
+│   └── graphics/<date-slug>/     # finished graphics
+├── ads/
+│   ├── campaigns/<slug>/
+│   └── reports/
+├── sales/                        # enablement materials
+├── ai-visibility/                # tracker config, raw data, history
+├── reports/                      # audits, research, reviews
+├── calendar/                     # weekly social calendars (YYYY-Www.md)
+└── dashboards/                   # visual HTML dashboards, incl. hq.html
 ```
 
-Create folders as needed. Use lowercase, hyphenated slugs. Dates are the day the work is done.
+Create folders as needed. Lowercase, hyphenated slugs; dates are the day the work is done (`YYYY-MM-DD-<slug>`).
+
+If the workspace is a git repository, run `git pull` before starting, and when finished, commit your changes with a one-line message saying what the team did (e.g., `seo-agent: weekly audit, 3 briefs`) and push.
 
 ## 3. Content inventory
 
-After producing or refreshing any piece, append one row to `marketing/content-inventory.md` (create it with this header if missing):
+After producing or refreshing any piece, append a row to `marketing/content-inventory.md` (create it with this header if missing):
 
 ```
-| Date | Type | Title | Primary keyword | Location / URL | Status |
-|------|------|-------|-----------------|----------------|--------|
+| Date | Type | Title | Primary keyword | Location / URL | Agent | Status |
+|------|------|-------|-----------------|----------------|-------|--------|
 ```
 
-Status is one of `draft`, `ready`, `published`, `refreshed`. Check the inventory before proposing new topics so the team doesn't duplicate work.
+Status: `draft`, `ready`, `published`, `refreshed`. Check the inventory before proposing new work, to avoid duplicates and to find things to link to or repurpose.
 
-## 4. Handoffs between agents
+## 4. Handoffs: briefs
 
-The SEO agent never writes final content, and the content agent never decides strategy on its own. Work moves between them as **content briefs** in `marketing/briefs/`, using `${CLAUDE_PLUGIN_ROOT}/templates/content-brief.md`.
+Agents hand work to each other with **briefs** in `marketing/briefs/YYYY-MM-DD-<slug>.md`, using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`. The `to:` field names the receiving agent; `type:` names the deliverable.
 
-- A brief's `status` moves `ready` → `in-progress` → `done`.
-- Subagents cannot call each other directly. The SEO agent writes briefs and returns their file paths; the main session (the team lead) then hands each brief to the content agent.
-- When the content agent finishes a brief, it sets `status: done` and adds the output path to the brief.
+- Status moves `ready` → `in-progress` → `done`. The receiver sets `in-progress` when starting and `done` (with `output:`) when finished.
+- Subagents can't call each other. An agent writes briefs and returns their paths; the main session (team lead) hands each brief to the named agent.
+- Anything visual goes to the **design-agent** as a brief with `type: graphic`. Other agents describe what they need (purpose, size, message); they don't make final graphics themselves.
+- Keep a run's queue short: at most 5 briefs per run unless the user asks for more.
 
 ## 5. Facts and claims
 
 - Never invent statistics, customer names, quotes, awards, benchmarks, prices or feature claims.
-- Product claims must come from the brand brief or a page the user owns. External facts need a source link.
-- Anything you could not verify goes in the output's **To verify** list, and is marked `[VERIFY]` in the text.
-- Be fair to competitors and alternatives. Don't disparage; compare on facts.
+- Product claims come from the brand brief or the user's own pages; external facts need a source link.
+- Mark anything unverified `[VERIFY]` in the text and list it under **To verify**.
+- Be fair to competitors and alternatives; compare on facts.
 
-## 6. Output
+## 6. Output and visuals
 
-- Default deliverable is Markdown in the workspace folder above.
-- Produce a Word (.docx) version only when the user or the brief asks for one.
-- End every task with a short summary: what was produced, where it is, and what needs a human check.
-- Run autonomously. Don't stop for outline approval or routine confirmation; make sensible choices and state them. Ask only when a missing input would make the result wrong (for example, no URL for a page refresh).
+- The record of every task is Markdown in the workspace folder above.
+- Reports with numbers (audits, AI visibility, ads, performance, research) also get a **visual dashboard**: follow `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`.
+- Produce Word, PowerPoint or PDF only when asked or when the brief says so.
+- End every task with a short summary: what was produced, where it is, what needs a human check.
+- Work autonomously: make sensible choices and state them; ask only when a missing input would make the result wrong.
