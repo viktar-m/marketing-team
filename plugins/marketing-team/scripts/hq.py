@@ -157,9 +157,30 @@ def column_chart(weeks: list[tuple[str, int]], w=520, h=180) -> str:
     return "".join(parts)
 
 
-def build(ws: Path, out: Path, today: dt.date) -> str:
-    rel = lambda p: esc(Path("..", p.relative_to(ws)).as_posix()) if out.parent.resolve() == (ws / "dashboards").resolve() \
-        else esc(p.resolve().as_uri())
+def github_base(ws: Path) -> str | None:
+    """https://github.com/<owner>/<repo>/blob/<branch>/ for the workspace's git remote, if it is on GitHub."""
+    import subprocess
+    def git(*args):
+        r = subprocess.run(["git", "-C", str(ws), *args], capture_output=True, text=True)
+        return r.stdout.strip() if r.returncode == 0 else ""
+    url, root = git("remote", "get-url", "origin"), git("rev-parse", "--show-toplevel")
+    m = re.search(r"github\.com[:/]([^/]+)/([^/.]+?)(?:\.git)?$", url)
+    if not (m and root):
+        return None
+    branch = git("rev-parse", "--abbrev-ref", "HEAD") or "main"
+    branch = "main" if branch == "HEAD" else branch
+    prefix = Path(ws).resolve().relative_to(Path(root).resolve()).as_posix()
+    prefix = "" if prefix == "." else prefix + "/"
+    return f"https://github.com/{m.group(1)}/{m.group(2)}/blob/{branch}/{prefix}"
+
+
+def build(ws: Path, out: Path, today: dt.date, link_base: str | None = None) -> str:
+    if link_base:  # published pages can't open workspace files: link to them on GitHub instead
+        rel = lambda p: esc(link_base + p.resolve().relative_to(ws.resolve()).as_posix()) + "' target='_blank' rel='noopener"
+    elif out.parent.resolve() == (ws / "dashboards").resolve():
+        rel = lambda p: esc(Path("..", p.relative_to(ws)).as_posix())
+    else:
+        rel = lambda p: esc(p.resolve().as_uri())
     brand = "Marketing"
     bb = ws / "brand-brief.md"
     if bb.exists():
@@ -334,6 +355,8 @@ def main(argv=None) -> int:
     ap.add_argument("--workspace", default="marketing")
     ap.add_argument("--out", default=None)
     ap.add_argument("--today", help="override today's date (YYYY-MM-DD)")
+    ap.add_argument("--link-base", help="URL prefix for links to workspace files; default: the GitHub repo if the "
+                    "workspace has a GitHub remote, else relative links. Pass 'relative' to force relative links.")
     a = ap.parse_args(argv)
     ws = Path(a.workspace)
     if not ws.exists():
@@ -342,7 +365,8 @@ def main(argv=None) -> int:
     out = Path(a.out) if a.out else ws / "dashboards" / "hq.html"
     out.parent.mkdir(parents=True, exist_ok=True)
     today = dt.date.fromisoformat(a.today) if a.today else dt.date.today()
-    out.write_text(build(ws, out, today))
+    base = None if a.link_base == "relative" else (a.link_base or github_base(ws))
+    out.write_text(build(ws, out, today, base))
     print(f"Marketing HQ written to {out}")
     return 0
 
