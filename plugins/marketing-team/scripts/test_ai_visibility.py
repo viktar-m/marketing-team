@@ -110,5 +110,42 @@ class EndToEnd(unittest.TestCase):
             self.assertTrue(all(r["mentioned"] == "1" and r["rank"] == "1" and r["cited"] == "1" for r in own))
 
 
+class GapFilling(unittest.TestCase):
+    def test_rerun_fills_only_gaps_and_logs_errors(self):
+        import os
+        with tempfile.TemporaryDirectory() as d:
+            av.main(["demo", "--dir", d])
+            for f in ("history.csv", "citations.csv", "sentiment.csv"):
+                (Path(d) / f).unlink()
+            cfg = json.loads((Path(d) / "config.json").read_text())
+            cfg["pause_seconds"] = 0
+            (Path(d) / "config.json").write_text(json.dumps(cfg))
+            calls, failures = [], [0]
+
+            def flaky(p, e, k):
+                calls.append(p)
+                if failures[0] < 2:
+                    failures[0] += 1
+                    raise RuntimeError("HTTP 400: bad things with key " + k)
+                return ("Acme Pantry is good.", [])
+            orig = av.PROVIDERS["openai"]
+            av.PROVIDERS["openai"] = flaky
+            os.environ["OPENAI_API_KEY"] = "sk-secret"
+            try:
+                av.main(["run", "--dir", d, "--engines", "chatgpt", "--date", "2026-11-01"])
+                errs = (Path(d) / "data" / "2026-11-01-errors.jsonl").read_text()
+                self.assertEqual(len(errs.splitlines()), 2)
+                self.assertNotIn("sk-secret", errs)
+                calls.clear()
+                av.main(["run", "--dir", d, "--engines", "chatgpt", "--date", "2026-11-01"])
+                self.assertEqual(len(calls), 2)  # only the two gaps
+            finally:
+                av.PROVIDERS["openai"] = orig
+                del os.environ["OPENAI_API_KEY"]
+            with open(Path(d) / "history.csv") as f:
+                rows = [r for r in csv.DictReader(f) if r["is_own"] == "1"]
+            self.assertEqual(len(rows), 5)
+
+
 if __name__ == "__main__":
     unittest.main()

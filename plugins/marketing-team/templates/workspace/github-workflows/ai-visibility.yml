@@ -60,7 +60,7 @@ jobs:
         run: python3 .team/plugins/marketing-team/scripts/ai_visibility.py report --dir marketing/ai-visibility --out marketing/dashboards/ai-visibility.html
 
       - name: Save results
-        if: steps.setup.outputs.ready == 'true'
+        if: always() && steps.setup.outputs.ready == 'true'   # also saves the error log when a run fails
         run: |
           git config user.name "ai-visibility-tracker"
           git config user.email "ai-visibility-tracker@users.noreply.github.com"

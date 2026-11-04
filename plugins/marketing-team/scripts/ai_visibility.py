@@ -86,7 +86,7 @@ def _post(url: str, payload: dict, headers: dict, timeout: int = 120) -> dict:
     data = json.dumps(payload).encode()
     req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json", **headers})
     last = None
-    for attempt in range(3):
+    for attempt in range(5):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return json.loads(r.read())
@@ -94,7 +94,9 @@ def _post(url: str, payload: dict, headers: dict, timeout: int = 120) -> dict:
             body = e.read().decode(errors="replace")[:500]
             last = f"HTTP {e.code}: {body}"
             if e.code in (429, 500, 502, 503, 529):
-                time.sleep(2 ** attempt * 3)
+                retry_after = e.headers.get("retry-after") if e.headers else None
+                wait = float(retry_after) if retry_after and retry_after.replace(".", "").isdigit() else 5 * 2 ** attempt
+                time.sleep(min(wait, 90))
                 continue
             raise RuntimeError(last) from None
         except urllib.error.URLError as e:
@@ -241,18 +243,35 @@ def cmd_run(args) -> int:
         return 2
     raw_path = d / "data" / f"{today}.jsonl"
     raw_path.parent.mkdir(parents=True, exist_ok=True)
-    hist, cit, errors = [], [], 0
-    with raw_path.open("a") as raw:
+    done = set()
+    if raw_path.exists():  # a re-run on the same day only fills the gaps
+        for line in raw_path.read_text().splitlines():
+            try:
+                r = json.loads(line)
+                done.add((r["engine"], r["prompt_id"], int(r["run"])))
+            except (ValueError, KeyError):
+                pass
+    err_path = d / "data" / f"{today}-errors.jsonl"
+    hist, cit, errors, skipped = [], [], 0, 0
+    with raw_path.open("a") as raw, err_path.open("a") as errlog:
         for name, e in active.items():
             ask = PROVIDERS[e["provider"]]
             key = os.environ[e["key_env"]]
             for p in cfg["prompts"]:
                 for run in range(1, int(cfg["runs_per_prompt"]) + 1):
+                    if (name, p["id"], run) in done:
+                        skipped += 1
+                        continue
+                    time.sleep(float(cfg.get("pause_seconds", 2)))
                     try:
                         text, cites = ask(p["prompt"], e, key)
                     except Exception as ex:  # keep going; one failure shouldn't lose the run
                         errors += 1
-                        print(f"[{name}] {p['id']}: {ex}", file=sys.stderr)
+                        msg = str(ex).replace(key, "***")[:400]
+                        print(f"[{name}] {p['id']}: {msg}", file=sys.stderr)
+                        errlog.write(json.dumps({"time": dt.datetime.utcnow().isoformat(timespec="seconds"),
+                                                 "engine": name, "prompt_id": p["id"], "run": run,
+                                                 "error": msg}) + "\n")
                         continue
                     res = analyse(text, cites, brands)
                     raw.write(json.dumps({"date": today, "engine": name, "model": e["model"], "prompt_id": p["id"],
@@ -271,8 +290,11 @@ def cmd_run(args) -> int:
                           f"{'mentioned' if res[0]['mentioned'] else 'not mentioned'}, {len(cites)} citations")
     append_csv(d / "history.csv", HISTORY_FIELDS, hist)
     append_csv(d / "citations.csv", CITATION_FIELDS, cit)
-    print(f"Done: {len(hist) // max(len(brands), 1)} answers recorded, {errors} errors.")
-    return 1 if errors and not hist else 0
+    if err_path.exists() and err_path.stat().st_size == 0:
+        err_path.unlink()
+    print(f"Done: {len(hist) // max(len(brands), 1)} answers recorded, {skipped} already done, {errors} errors"
+          + (f" (see {err_path})" if errors else "") + ".")
+    return 1 if errors and not hist and not skipped else 0
 
 
 # ---------------------------------------------------------------- metrics
