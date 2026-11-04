@@ -55,6 +55,12 @@ Logo, CTA text, URL, duration
 
 Rules for the brief: on-screen text short enough to read in the scene's time (about 3 words per second); every scene names its asset file or describes the generated visual; brand colours as hex codes; the first scene works without sound.
 
+## Phase 3 — Make it in Claude Motion (when available)
+
+If the session's Artifact tool lists a **Motion** type, offer to make the video directly instead of handing over the brief: create it from the type, follow the instructions it returns, and use `motion-brief.md` as the script — scenes, timings, on-screen text, brand colours, assets (upload the files from `assets/`). Use the brand's Design System if one is listed in `marketing/artifacts.md`. Record the video in `marketing/artifacts.md` and the brief's `output:`.
+
+If there's no Motion type, deliver `motion-brief.md` and tell the user how to use it (below).
+
 ## Output
 
 `plan.md` (Phase 1), `motion-brief.md` (Phase 2), and a content inventory row (type `video`). Tell the user how to use it: open Claude's Motion feature, attach the files listed under "Assets attached", and paste the brief. For cut-downs (other lengths or ratios), add one short section per variant listing which scenes to keep.

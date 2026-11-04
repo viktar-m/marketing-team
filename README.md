@@ -40,6 +40,9 @@ A tracker asks ChatGPT, Perplexity, Gemini and Claude the questions your custome
 ### Internal linking built into every page
 Every article, new page and refresh suggests the links it should contain, and lists which existing pages should link to it, with the exact sentence to change. The suggestions come from a site index plus search results.
 
+### Claude Design, Design System and Motion
+When your Claude account offers them, the designer makes graphics as editable **Claude Design** canvases (you tweak and export them yourself), keeps the brand kit as a **Claude Design System** that every design uses, and the social & video agent can make videos in **Claude Motion** from its video brief. Without them, the team falls back to rendered PNGs and a paste-ready Motion brief. Links to everything that lives in Claude are kept in the workspace's `marketing/artifacts.md` and shown on the HQ.
+
 ### Visual output
 Reports come with self-contained dashboards (light and dark mode, colour-blind-safe palette, tooltips, a table view). The Marketing HQ shows the team's work as a board: open briefs by status and agent, deadlines, output per week, AI share of voice and strategy review dates. The designer renders graphics to PNG at exact platform sizes.
 

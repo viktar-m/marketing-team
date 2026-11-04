@@ -24,6 +24,14 @@ Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md` and the brand brief.
 6. **Templates.** Define 4–6 reusable layouts as HTML/CSS in `marketing/design/templates/` (see the `graphic` skill for the format): quote/tip card, announcement, feature highlight with screenshot, carousel slide, blog cover, ad creative. Each uses CSS variables for the kit's colours and fonts so later graphics stay consistent.
 7. **Preview.** Render the templates with sample text to PNG (see the `graphic` skill) and assemble a one-page preview `marketing/design/brand-kit-preview.png`.
 
+## Also as a Claude Design System
+
+If the session's Artifact tool lists a **Design System** type, also create the brand's design system there (title: "<Brand> design system"), following the instructions the type returns: tokens (colours with usage notes, type scale and fonts, spacing, radii), a README brand book (voice-to-visual rules, logo use, imagery, do/don't), and the logo and icon files as assets. Build it from the same sources as `brand-kit.md` — exact values, real files, nothing invented.
+
+- One design system per brand. If `marketing/artifacts.md` already lists one, revise it instead.
+- Add its link to `brand-kit.md` (a line `Design System: <link>` at the top) and a row to `marketing/artifacts.md`. Design canvases made later name this system, so every graphic matches it.
+- `brand-kit.md` stays the source of truth in the workspace for sessions without artifact access; when one changes, update the other.
+
 ## Output
 
 `marketing/design/brand-kit.md` with the sections above (use tables for colours and type), the template files, the preview image, and a summary for the user: what was taken from their materials, what was proposed, and what they need to supply or approve.

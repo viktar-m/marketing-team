@@ -86,6 +86,28 @@ def load_inventory(ws: Path) -> list[dict]:
     return rows
 
 
+def load_artifacts(ws: Path) -> list[dict]:
+    """Rows of marketing/artifacts.md: designs, design systems, videos and dashboards that live in Claude."""
+    p = ws / "artifacts.md"
+    if not p.exists():
+        return []
+    rows, header = [], None
+    for line in p.read_text(errors="replace").splitlines():
+        if not line.strip().startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if header is None:
+            header = [c.lower() for c in cells]
+            continue
+        if set("".join(cells)) <= set("-: "):
+            continue
+        row = dict(zip(header, cells))
+        m = re.search(r"\((https?://[^)\s]+)\)", row.get("link", "")) or re.search(r"https?://\S+", row.get("link", ""))
+        row["url"] = (m.group(1) if m and m.groups() else m.group(0)) if m else ""
+        rows.append(row)
+    return sorted(rows, key=lambda r: r.get("date", ""), reverse=True)
+
+
 def recent_files(folder: Path, n: int) -> list[Path]:
     if not folder.exists():
         return []
@@ -246,6 +268,13 @@ def build(ws: Path, out: Path, today: dt.date) -> str:
     dl_rows = "".join(f"<li><b>{d:%d %b}</b> · {esc(t)} <span class='muted'>· {esc(who)}</span></li>"
                       for d, t, who, _ in deadlines[:8]) or "<li class='muted'>No upcoming deadlines</li>"
 
+    arts = load_artifacts(ws)
+    art_rows = "".join(
+        f"<li><a href='{esc(a['url'])}'>{esc(a.get('title') or a['url'])}</a> "
+        f"<span class='muted'>· {esc(a.get('type', ''))} · {esc(a.get('date', ''))}</span></li>"
+        if a["url"] else f"<li>{esc(a.get('title', ''))} <span class='muted'>· {esc(a.get('type', ''))}</span></li>"
+        for a in arts[:8]) or "<li class='muted'>No designs or videos yet</li>"
+
     cal = sorted((ws / "calendar").glob("*.md"), reverse=True)
     cal_link = f"<a href='{rel(cal[0])}'>{esc(cal[0].stem)}</a>" if cal else "<span class='muted'>none yet</span>"
 
@@ -294,7 +323,7 @@ ul{{margin:0;padding-left:18px}} li{{margin:4px 0}}
 </div>
 <div class="grid3">
 <div class="card"><h2>Upcoming deadlines</h2><ul>{dl_rows}</ul></div>
-<div class="card"><h2>Latest reports</h2><ul>{reports}</ul></div>
+<div class="card"><h2>Latest reports</h2><ul>{reports}</ul><h2 style="margin-top:16px">Designs and videos</h2><ul>{art_rows}</ul></div>
 <div class="card"><h2>Strategy</h2><ul>{''.join(strat_rows)}</ul><h2 style="margin-top:16px">Last 30 days by type</h2>{type_chart}</div>
 </div>
 </div></div></body></html>"""

@@ -16,7 +16,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketi
 | One or more posts for LinkedIn, X or Facebook | `marketing-team:social-post` |
 | Turn a long piece or announcement into a set of posts | `marketing-team:social-repurpose` |
 | Plan a week (or more) of posts | `marketing-team:social-calendar` |
-| Plan a video: assets, shot list, script, Motion brief | `marketing-team:video-brief` |
+| Plan a video: assets, shot list, script, Motion brief — and make it in Claude Motion when available | `marketing-team:video-brief` |
 
 ## Visuals
 

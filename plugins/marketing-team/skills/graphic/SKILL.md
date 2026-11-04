@@ -7,7 +7,20 @@ description: 'Design on-brand marketing graphics and export them as PNG in every
 
 Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketing/design/brand-kit.md` (run `brand-kit` first if it's missing) and the brief.
 
-## How graphics are made
+## Where to make it
+
+Two ways; pick one per request, don't do both unless asked.
+
+**Claude Design canvas (preferred when available).** If the session's Artifact tool lists a **Design** type, make the graphics there: the user gets editable artboards they can tweak, comment on and export (PNG, PDF) themselves.
+- One canvas per set: a campaign, a launch, a week of posts. One artboard per graphic and size, laid out in rows by size. Title the canvas after the set ("Spring promo — ads and social").
+- Use the brand's **Design System**: its link is in `marketing/design/brand-kit.md` (and `marketing/artifacts.md`). Name it to the Design type as the system to use. If there's none yet, run `brand-kit` first, or build from `brand-kit.md` and say so.
+- A canvas for this campaign already exists (check `marketing/artifacts.md`)? Add artboards to it instead of creating a new one.
+- Follow the instructions the Design type returns when you create the canvas; the sizes table and the rules below still apply.
+- Record the canvas in `marketing/artifacts.md` and put its link in the brief's `output:`.
+
+**PNG renderer (fallback).** Use it when there's no Design type in the session (e.g., Claude Code in a terminal), in scheduled or unattended runs, when PNG files must be committed to the workspace, or when the user asks for files.
+
+## How graphics are made with the PNG renderer
 
 Each graphic is a small self-contained HTML/CSS file, built from the brand kit's templates in `marketing/design/templates/` and rendered to PNG at exact pixel sizes:
 
@@ -52,4 +65,6 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/render_graphics.py marketing/design/graphi
 
 ## Output
 
-The folder with HTML sources, PNGs (and PDF for carousels), `contact-sheet.png`, and `README.md` listing each file, its size, its use, alt text and any placeholders. Close the brief with the folder path.
+**Design canvas:** the canvas link, a one-line list of artboards (name, size), alt text per graphic, placeholders the user must fill, and the `marketing/artifacts.md` row. Remind the user they can export PNG/PDF from the canvas.
+
+**PNG renderer:** the folder with HTML sources, PNGs (and PDF for carousels), `contact-sheet.png`, and `README.md` listing each file, its size, its use, alt text and any placeholders. Close the brief with the folder path.

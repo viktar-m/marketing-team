@@ -39,6 +39,7 @@ marketing/
 │   └── reports/
 ├── sales/                        # enablement materials
 ├── ai-visibility/                # tracker config, raw data, history
+├── artifacts.md                  # links to designs, design system, videos in Claude
 ├── reports/                      # audits, research, reviews
 ├── calendar/                     # weekly social calendars (YYYY-Www.md)
 └── dashboards/                   # visual HTML dashboards, incl. hq.html
@@ -68,14 +69,28 @@ Agents hand work to each other with **briefs** in `marketing/briefs/YYYY-MM-DD-<
 - Anything visual goes to the **design-agent** as a brief with `type: graphic`. Other agents describe what they need (purpose, size, message); they don't make final graphics themselves.
 - Keep a run's queue short: at most 5 briefs per run unless the user asks for more.
 
-## 5. Facts and claims
+## 5. Work that lives in Claude (artifacts)
+
+Some deliverables live in Claude rather than in the workspace: **Design** canvases (graphics, ads, mockups), the **Design System** (the brand kit), **Motion** videos, and published dashboards. When you create or update one:
+
+- Add or update a row in `marketing/artifacts.md` (create it with this header if missing):
+  ```
+  | Date | Type | Title | Link | Brief / campaign | Agent |
+  |------|------|-------|------|------------------|-------|
+  ```
+- Put the link in the brief's `output:` and in the content inventory's Location column.
+- Revise an existing artifact (use its link) rather than creating a duplicate.
+
+Artifact tools are only available in some sessions (the Claude app, and Claude Code sessions that offer them). Where they aren't, use the file-based fallback the skill describes and say so.
+
+## 6. Facts and claims
 
 - Never invent statistics, customer names, quotes, awards, benchmarks, prices or feature claims.
 - Product claims come from the brand brief or the user's own pages; external facts need a source link.
 - Mark anything unverified `[VERIFY]` in the text and list it under **To verify**.
 - Be fair to competitors and alternatives; compare on facts.
 
-## 6. Output and visuals
+## 7. Output and visuals
 
 - The record of every task is Markdown in the workspace folder above.
 - Reports with numbers (audits, AI visibility, ads, performance, research) also get a **visual dashboard**: follow `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`.

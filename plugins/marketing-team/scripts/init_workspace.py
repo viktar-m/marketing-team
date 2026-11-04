@@ -88,6 +88,8 @@ def main(argv=None) -> int:
         brief = brief.replace("- **Website:** main URL", f"- **Website:** {a.website}", 1)
     write("marketing/brand-brief.md", brief)
     write("marketing/content-inventory.md", INVENTORY_HEADER)
+    write("marketing/artifacts.md", "# Work in Claude\n\nDesigns, the design system, videos and dashboards that live in Claude.\n\n"
+          "| Date | Type | Title | Link | Brief / campaign | Agent |\n|------|------|-------|------|------------------|-------|\n")
 
     for folder in FOLDERS:
         d = root / "marketing" / folder
