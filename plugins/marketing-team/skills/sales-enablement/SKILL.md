@@ -9,6 +9,8 @@ Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief (position
 
 Sales materials are used live — on a call, in a follow-up email, five minutes before a demo. Make them short, scannable and honest.
 
+Research follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` (primary, current sources; dated facts).
+
 ## Formats
 
 **Battlecard** (one page per competitor)

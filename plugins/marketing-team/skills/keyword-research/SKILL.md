@@ -7,6 +7,8 @@ description: 'Research and prioritise keywords and search questions for a topic,
 
 Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md` and the brand brief first.
 
+Research follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` (primary, current sources; dated facts).
+
 ## Inputs
 
 A seed: a topic, product feature, competitor, URL or list of gaps from `content-gap`. If none is given, use the priority topics in the brief.

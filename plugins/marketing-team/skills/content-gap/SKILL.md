@@ -7,6 +7,8 @@ description: 'Compare our content with competitors'' to find topics, questions a
 
 Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md` and the brand brief first.
 
+Research follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` (primary, current sources; dated facts).
+
 ## Inputs
 
 Competitors from the brief (or ones the user names), and the topic area to compare (default: the brief's priority topics). Keep it to 2–4 competitors per run.

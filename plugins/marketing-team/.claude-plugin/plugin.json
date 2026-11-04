@@ -1,7 +1,7 @@
 {
   "name": "marketing-team",
   "displayName": "AI Marketing Team",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A 7-agent AI marketing team for Claude: strategist, SEO & AI visibility, web content, social & video, design, paid ads, and GTM & sales \u2014 sharing one brand brief, handing work to each other through briefs, with visual dashboards and a Marketing HQ.",
   "author": {
     "name": "Viktar"

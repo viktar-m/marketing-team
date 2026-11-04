@@ -7,6 +7,8 @@ description: 'Plan a marketing campaign or promotion end to end - objective, aud
 
 Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketing/strategy/marketing-strategy.md` and the channel strategies, and past campaigns in `marketing/campaigns/` (what worked before).
 
+Research follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` (primary, current sources; dated facts).
+
 ## Inputs
 
 What the campaign is for, rough dates, and budget if any. For product launches, read the launch kit in `marketing/launches/<slug>/` — the gtm-agent owns launch messaging; the campaign builds on it.

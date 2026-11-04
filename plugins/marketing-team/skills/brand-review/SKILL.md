@@ -26,6 +26,8 @@ The goal is a decision, not a lecture: can this ship, and if not, exactly what c
 - Visuals: brand kit colours and fonts, legibility on mobile, contrast, text amount, correct sizes, no fake screenshots or logos
 - Sales material: scannable in a live call, honest about competitors, current pricing and features
 
+**Depth (strategic and long-form work)** — passes the generic-advice test in `${CLAUDE_PLUGIN_ROOT}/templates/analysis-standards.md`; decisions have a recommendation, reasoning and trade-offs; competitor facts are primary and dated. Generic advice is a **major** issue.
+
 **Accessibility and inclusion** — alt text, readable contrast, plain language, inclusive wording.
 
 ## Verdict

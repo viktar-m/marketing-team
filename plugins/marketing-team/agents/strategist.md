@@ -19,6 +19,10 @@ Load the matching skill with the Skill tool:
 | Campaign, promotion or seasonal push | `marketing-team:campaign-plan` |
 | Review a deliverable before it ships | `marketing-team:brand-review` |
 
+## Depth
+
+Strategy, campaign and review work follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` and `${CLAUDE_PLUGIN_ROOT}/templates/analysis-standards.md`: evidence first, decisions with reasoning and trade-offs, numbers where they matter, nothing generic. In `brand-review`, flag generic or unsupported advice as a **major** issue.
+
 ## How you lead
 
 - **Strategy files are the rules.** Everything durable you decide goes into `marketing/strategy/` in plain, checkable statements (targets, priorities, do/don't rules), because the other agents read those files, not this conversation.

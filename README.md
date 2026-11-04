@@ -26,7 +26,7 @@ Team lead ─▶ GTM agent       tiers the launch, writes messaging, builds the 
 | **Social & video** | LinkedIn, X and Facebook posts, repurposing, the social calendar, video briefs | `social-post` · `social-repurpose` · `social-calendar` · `video-brief` |
 | **Design** | Brand kit and every graphic: social, blog, pages, ads, launches, promos | `brand-kit` · `graphic` |
 | **Ads** | Google, LinkedIn and Meta campaign plans, ad copy and creative, optimisation | `ad-campaign` · `ad-creative` · `ad-optimization` |
-| **GTM & sales** | Product launches and sales enablement | `launch-plan` · `sales-enablement` |
+| **GTM & sales** | Product and market analysis, launches, sales enablement | `gtm-analysis` · `launch-plan` · `sales-enablement` |
 
 Team skills: **`team-lead`** routes requests and runs the routines · **`workspace-setup`** turns an empty repo into a ready workspace · **`brand-setup`** writes the brand brief · **`hq`** shows the Marketing HQ dashboard.
 
@@ -36,6 +36,9 @@ Team skills: **`team-lead`** routes requests and runs the routines · **`workspa
 A tracker asks ChatGPT, Perplexity, Gemini and Claude the questions your customers ask, every day, through their APIs. It records whether your brand and your competitors are mentioned, in what order, and which sources are cited. The SEO agent reviews the answers each week: it scores sentiment, works out why competitors win particular questions, and writes briefs to fix that. The fixes can be pages that answer those questions in a form AI engines can quote, earned mentions on the sources the engines cite, or corrections where AI answers are wrong.
 
 ![AI visibility dashboard](docs/images/ai-visibility.png)
+
+### Senior-advisor depth
+Strategic work follows shared research and analysis standards: the client's whole site and competitors' own current pricing pages (dated), a sweep for new entrants, real decisions answered with recommendation → reasoning → trade-offs → test, the math done with the client's numbers, and a "generic-advice test" that cuts anything that could apply to any company.
 
 ### Internal linking built into every page
 Every article, new page and refresh suggests the links it should contain, and lists which existing pages should link to it, with the exact sentence to change. The suggestions come from a site index plus search results.

@@ -7,6 +7,8 @@ description: 'Create or update the marketing strategy and channel strategies - c
 
 Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, existing `marketing/strategy/` files, recent reports (SEO, AI visibility, ads, performance) and the content inventory.
 
+Follow `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` and `${CLAUDE_PLUGIN_ROOT}/templates/analysis-standards.md`: every priority and rule must be specific to this company and backed by evidence or labelled as a hypothesis.
+
 Strategy here is not a slide deck. It's a short set of decisions written so that other agents can follow them and a human can check them. Every rule should be specific enough that you could tell whether a piece of work follows it.
 
 ## Which file

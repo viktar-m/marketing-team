@@ -83,14 +83,20 @@ Some deliverables live in Claude rather than in the workspace: **Design** canvas
 
 Artifact tools are only available in some sessions (the Claude app, and Claude Code sessions that offer them). Where they aren't, use the file-based fallback the skill describes and say so.
 
-## 6. Facts and claims
+## 6. Depth and evidence
+
+- Research follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md`: the client's whole site, competitors' own pricing pages and listings (dated), a sweep for new entrants.
+- Strategic deliverables follow `${CLAUDE_PLUGIN_ROOT}/templates/analysis-standards.md`: explain simply first, answer the real decisions with recommendation → reasoning → trade-offs → test, show the math, and pass the generic-advice test.
+- If the session blocks you from writing files, return the complete deliverable in your final message so the team lead can save it — never a shortened version.
+
+## 7. Facts and claims
 
 - Never invent statistics, customer names, quotes, awards, benchmarks, prices or feature claims.
 - Product claims come from the brand brief or the user's own pages; external facts need a source link.
 - Mark anything unverified `[VERIFY]` in the text and list it under **To verify**.
 - Be fair to competitors and alternatives; compare on facts.
 
-## 7. Output and visuals
+## 8. Output and visuals
 
 - The record of every task is Markdown in the workspace folder above.
 - Reports with numbers (audits, AI visibility, ads, performance, research) also get a **visual dashboard**: follow `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`.

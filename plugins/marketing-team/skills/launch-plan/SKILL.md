@@ -7,9 +7,13 @@ description: 'Plan a product launch or release end to end - launch tier, positio
 
 Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketing/strategy/marketing-strategy.md`, and previous launches in `marketing/launches/` (reuse what worked).
 
+Research follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` (primary, current sources; dated facts).
+
 ## Inputs
 
 What's launching, when, for whom, and the source of truth for features (release notes, specs, the product team). If feature details are thin, ask for them — launch content built on guesses is dangerous. Mark anything unconfirmed `[VERIFY]`.
+
+If the product's market, competitors or positioning haven't been analysed yet, run `marketing-team:gtm-analysis` first — a launch plan built on unexamined positioning repeats its mistakes.
 
 ## Workflow
 
