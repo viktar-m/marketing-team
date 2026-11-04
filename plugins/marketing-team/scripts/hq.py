@@ -3,6 +3,14 @@
 
 Usage
   python3 hq.py --workspace marketing --out marketing/dashboards/hq.html
+  python3 hq.py --workspace marketing --out /tmp/hq.html \
+      --link-base https://github.com/<owner>/<repo>/blob/main/
+
+Links to briefs, reports, strategy and calendar files are relative by default (they work when hq.html
+is opened from marketing/dashboards/). With --link-base, every such link is resolved against the
+workspace root (the git repository holding the marketing folder), prefixed with the base URL and
+opened in a new tab, so a copy published on its own (e.g. as an artifact) still has working links.
+Links to sibling dashboards (e.g. ai-visibility.html) stay relative: publish those files alongside.
 
 Reads briefs, the content inventory, reports, strategy files, campaigns, launches, the social
 calendar and AI visibility metrics. Standard library only.
@@ -15,6 +23,7 @@ import html
 import json
 import re
 import sys
+import urllib.parse
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -135,9 +144,35 @@ def column_chart(weeks: list[tuple[str, int]], w=520, h=180) -> str:
     return "".join(parts)
 
 
-def build(ws: Path, out: Path, today: dt.date) -> str:
-    rel = lambda p: esc(Path("..", p.relative_to(ws)).as_posix()) if out.parent.resolve() == (ws / "dashboards").resolve() \
-        else esc(p.resolve().as_uri())
+def workspace_root(ws: Path) -> Path:
+    """The git repository root holding the marketing folder (falls back to the folder's parent)."""
+    ws = ws.resolve()
+    for d in (ws, *ws.parents):
+        if (d / ".git").exists():
+            return d
+    return ws.parent
+
+
+def make_link(ws: Path, out: Path, link_base: str | None = None):
+    """Return href(path) -> the attributes of a link to a workspace file (href, plus target when absolute)."""
+    dash = (ws / "dashboards").resolve()
+    root = workspace_root(ws)
+    base = (link_base.rstrip("/") + "/") if link_base else None
+
+    def href(p: Path) -> str:
+        p = p.resolve()
+        if base and not (p.suffix == ".html" and p.parent == dash):
+            url = base + urllib.parse.quote(p.relative_to(root).as_posix())
+            return f"href='{esc(url)}' target='_blank' rel='noopener'"
+        if out.parent.resolve() == dash:
+            return f"href='{esc(Path('..', p.relative_to(ws.resolve())).as_posix())}'"
+        return f"href='{esc(p.as_uri())}'"
+
+    return href
+
+
+def build(ws: Path, out: Path, today: dt.date, link_base: str | None = None) -> str:
+    rel = make_link(ws, out, link_base)
     brand = "Marketing"
     bb = ws / "brand-brief.md"
     if bb.exists():
@@ -201,7 +236,7 @@ def build(ws: Path, out: Path, today: dt.date) -> str:
         meta = " · ".join(x for x in [b.get("type", ""), b.get("priority", ""),
                                        f"due {due:%d %b}" if due else ""] if x)
         flag = "<span class='late'>⚠ overdue</span>" if late else ""
-        return (f"<a class='bcard' href='{rel(b['path'])}'><span class='chip' style='--c:{color.get(b['to'], 'var(--neutral)')}'>"
+        return (f"<a class='bcard' {rel(b['path'])}><span class='chip' style='--c:{color.get(b['to'], 'var(--neutral)')}'>"
                 f"{esc(AGENT_LABEL.get(b['to'], b['to']))}</span><div class='bt'>{esc(b['title'])}</div>"
                 f"<div class='bm'>{esc(meta)} {flag}</div></a>")
 
@@ -230,7 +265,7 @@ def build(ws: Path, out: Path, today: dt.date) -> str:
     type_chart = bars([(t.title(), n, "var(--s1)") for t, n in types.most_common(8)])
 
     # reports and strategy
-    reports = "".join(f"<li><a href='{rel(f)}'>{esc(f.stem)}</a></li>" for f in recent_files(ws / "reports", 8)) \
+    reports = "".join(f"<li><a {rel(f)}>{esc(f.stem)}</a></li>" for f in recent_files(ws / "reports", 8)) \
         or "<li class='muted'>No reports yet</li>"
     strat_rows = []
     for name in ("marketing-strategy", "seo", "content", "social", "paid", "email"):
@@ -240,14 +275,14 @@ def build(ws: Path, out: Path, today: dt.date) -> str:
             nr = parse_date(m.group(1)) if m else None
             state = ("<span class='warn'>⚠ review due</span>" if nr and nr <= today
                      else f"review {nr:%d %b}" if nr else "no review date")
-            strat_rows.append(f"<li><a href='{rel(f)}'>{name}</a> <span class='muted'>· {state}</span></li>")
+            strat_rows.append(f"<li><a {rel(f)}>{name}</a> <span class='muted'>· {state}</span></li>")
         else:
             strat_rows.append(f"<li class='muted'>{name} — not written yet</li>")
     dl_rows = "".join(f"<li><b>{d:%d %b}</b> · {esc(t)} <span class='muted'>· {esc(who)}</span></li>"
                       for d, t, who, _ in deadlines[:8]) or "<li class='muted'>No upcoming deadlines</li>"
 
     cal = sorted((ws / "calendar").glob("*.md"), reverse=True)
-    cal_link = f"<a href='{rel(cal[0])}'>{esc(cal[0].stem)}</a>" if cal else "<span class='muted'>none yet</span>"
+    cal_link = f"<a {rel(cal[0])}>{esc(cal[0].stem)}</a>" if cal else "<span class='muted'>none yet</span>"
 
     lv = "".join(f"--s{i + 1}:{c};" for i, c in enumerate(LIGHT))
     dv = "".join(f"--s{i + 1}:{c};" for i, c in enumerate(DARK))
@@ -305,6 +340,8 @@ def main(argv=None) -> int:
     ap.add_argument("--workspace", default="marketing")
     ap.add_argument("--out", default=None)
     ap.add_argument("--today", help="override today's date (YYYY-MM-DD)")
+    ap.add_argument("--link-base", help="URL prefix for workspace file links, e.g. "
+                    "https://github.com/<owner>/<repo>/blob/main/ (sibling dashboard links stay relative)")
     a = ap.parse_args(argv)
     ws = Path(a.workspace)
     if not ws.exists():
@@ -313,7 +350,7 @@ def main(argv=None) -> int:
     out = Path(a.out) if a.out else ws / "dashboards" / "hq.html"
     out.parent.mkdir(parents=True, exist_ok=True)
     today = dt.date.fromisoformat(a.today) if a.today else dt.date.today()
-    out.write_text(build(ws, out, today))
+    out.write_text(build(ws, out, today, a.link_base))
     print(f"Marketing HQ written to {out}")
     return 0
 
