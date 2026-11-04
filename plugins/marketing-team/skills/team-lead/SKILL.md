@@ -1,6 +1,6 @@
 ---
 name: team-lead
-description: 'Route any marketing request to the right agent on the 7-agent marketing team, pass briefs between agents, and run the recurring routines. Use whenever the user gives a marketing task without naming an agent or skill (SEO, AI visibility, web content, social, video, design, ads, launches, sales materials, strategy, campaigns), when a task needs several agents, or for scheduled weekly and monthly routines.'
+description: 'Route any marketing request to the right agent on the 7-agent marketing team, pass briefs between agents, and run the recurring routines. Use whenever the user gives a marketing task without naming an agent or skill (SEO, AI visibility, web content, social, video, design, ads, launches, sales materials, strategy, campaigns), when a task needs several agents, or for scheduled weekly and monthly routines. For a brand-new product or client workspace use workspace-setup.'
 ---
 
 # Team lead
@@ -21,6 +21,7 @@ You coordinate the marketing team. You don't do the specialist work — you pick
 
 ## 1. Check the foundations
 
+- A new product or client, or an empty repo or folder → `marketing-team:workspace-setup` (it continues into brand-setup).
 - No `marketing/brand-brief.md` (or Project knowledge) and the task is more than a quick one-off → offer `marketing-team:brand-setup` first.
 - Visual work and no `marketing/design/brand-kit.md` → the design agent will create one first; mention it.
 
@@ -37,6 +38,7 @@ You coordinate the marketing team. You don't do the specialist work — you pick
 | A product release or launch, sales materials, battlecards, one-pagers | gtm-agent |
 | "Review / check this before publishing" | strategist (`brand-review`) |
 | "Status", "what's going on", "dashboard" | run `marketing-team:hq` yourself |
+| "Set up a workspace / new client / new product" | run `marketing-team:workspace-setup` yourself |
 
 If the *what* is undecided, start with the deciding agent (strategist, seo-agent, gtm-agent); if it's decided, go straight to the making agent.
 

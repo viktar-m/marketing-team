@@ -13,6 +13,7 @@ Any mix of: the company website URL, existing brand or style guides, sample cont
 
 ## Workflow
 
+0. **Workspace first.** If the workspace has no `CLAUDE.md` or no `marketing/` folder, run `marketing-team:workspace-setup` first (it comes back here).
 1. **Collect what exists.** If there's a website, fetch the home, product/features, pricing and about pages, and two or three recent blog posts. Read any files the user attached.
 2. **Draft the brief** in `marketing/brand-brief.md` using `${CLAUDE_PLUGIN_ROOT}/templates/brand-brief-template.md`. Fill every section you can from the sources. For an example of a finished brief, see `${CLAUDE_PLUGIN_ROOT}/templates/sample-brand-brief.md`.
 3. **Infer voice from evidence.** Derive the voice section from the user's own published writing: quote one real sentence that sounds right as the "we sound like" example.

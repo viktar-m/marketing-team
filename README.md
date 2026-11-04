@@ -28,7 +28,7 @@ Team lead ─▶ GTM agent       tiers the launch, writes messaging, builds the 
 | **Ads** | Google, LinkedIn and Meta campaign plans, ad copy and creative, optimisation | `ad-campaign` · `ad-creative` · `ad-optimization` |
 | **GTM & sales** | Product launches and sales enablement | `launch-plan` · `sales-enablement` |
 
-Team skills: **`team-lead`** routes requests and runs the routines · **`brand-setup`** writes the brand brief · **`hq`** shows the Marketing HQ dashboard.
+Team skills: **`team-lead`** routes requests and runs the routines · **`workspace-setup`** turns an empty repo into a ready workspace · **`brand-setup`** writes the brand brief · **`hq`** shows the Marketing HQ dashboard.
 
 ## Highlights
 
@@ -66,12 +66,16 @@ Details: [docs/architecture.md](docs/architecture.md).
 
 ## Get started
 
-1. **Brand brief:** "Set up the marketing team for <your website>." To try the team first, copy [`templates/sample-brand-brief.md`](plugins/marketing-team/templates/sample-brand-brief.md), which describes a fictional company, to `marketing/brand-brief.md`.
-2. **Strategy and brand kit:** "Write our marketing strategy." Then "Set up our brand kit."
-3. **Connect your data:** Search Console, Analytics and your ad platforms. Without them, agents label their numbers as estimates.
-4. **AI visibility:** "Set up AI visibility tracking." See [docs/ai-visibility.md](docs/ai-visibility.md) for the API keys.
-5. **Give the team work:** "Plan the v2 launch", "Audit our blog", "Next week's posts", "Why is our CPA up?", "Show me the HQ".
-6. **Schedule the routines:** [docs/scheduling.md](docs/scheduling.md).
+**One workspace per product or client:** a private GitHub repo, e.g. `mkt-<product>`.
+
+1. Create an **empty private repo** on GitHub.
+2. In Claude Code (the Code tab of the desktop app, or the terminal), start a session in that repo. In the Code tab: New → Cloud → choose the repo.
+3. Type **"Set up a marketing workspace for <product>. Website: <url>."** The team creates the workspace (folders, session instructions, dashboard), drafts the brand brief from the website, and asks you a few questions.
+4. Next: "Write our marketing strategy", then "Set up our brand kit" (add your logo and screenshots to `marketing/design/assets/` first), then "Set up AI visibility tracking" (see [docs/ai-visibility.md](docs/ai-visibility.md)).
+5. **Start a new session for each task**, in the same repo: "Show me the HQ", "Work on the homepage refresh brief", "Plan next week's posts". The repo is the team's memory, so every session starts with full context.
+6. When you're ready, schedule the routines ([docs/scheduling.md](docs/scheduling.md)).
+
+To try the team without a real product, set up a workspace for the fictional sample in [`templates/sample-brand-brief.md`](plugins/marketing-team/templates/sample-brand-brief.md).
 
 ## Workspace
 
