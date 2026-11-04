@@ -362,7 +362,7 @@ def pct(v) -> str:
 
 
 def line_chart(series: dict, order: list[str], w=720, h=260) -> str:
-    pad_l, pad_r, pad_t, pad_b = 44, 120, 16, 28
+    pad_l, pad_r, pad_t, pad_b = 44, 150, 16, 28
     dates = sorted({d for s in series.values() for d, _ in s})
     if not dates:
         return "<p class='muted'>No data yet.</p>"
