@@ -59,7 +59,7 @@ Mention detection matches whole words and is case-insensitive, across a brand's 
 
 ## Dashboards
 
-Dashboards are self-contained HTML files with inline SVG and no external dependencies, so they open offline and can be published as artifacts. They support light and dark mode and use a colour-blind-validated categorical palette, with the brand always in slot 1. `templates/dashboards.md` has the rules. `scripts/hq.py` and `scripts/ai_visibility.py` are the reference implementations.
+Dashboards are self-contained HTML files with inline SVG, so they open offline and can be published as artifacts. The HQ embeds every brief, report and strategy doc it links to (and the docs those link to) as JSON and opens them in a slide-over panel, so cards still work when the page is published without the repository; the panel renders markdown with marked from cdnjs and falls back to plain text offline. They support light and dark mode and use a colour-blind-validated categorical palette, with the brand always in slot 1. `templates/dashboards.md` has the rules. `scripts/hq.py` and `scripts/ai_visibility.py` are the reference implementations.
 
 ## Skills load on demand
 

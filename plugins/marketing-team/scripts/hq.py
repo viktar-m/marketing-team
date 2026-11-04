@@ -2,10 +2,18 @@
 """Marketing HQ: one visual dashboard of the whole team's state, built from the workspace files.
 
 Usage
-  python3 hq.py --workspace marketing --out marketing/dashboards/hq.html
+  python3 hq.py --workspace marketing --out marketing/dashboards/hq.html \
+      [--link-base https://github.com/<owner>/<repo>/blob/<branch>/]
 
 Reads briefs, the content inventory, reports, strategy files, campaigns, launches, the social
 calendar and AI visibility metrics. Standard library only.
+
+Every linked .md file (briefs, reports, strategy, the calendar, and the .md files those link to) is
+embedded in the page as JSON and opens in a slide-over panel, so the dashboard still works when it
+is published on its own (for example as a claude.ai artifact) without the repository next to it.
+--link-base is the GitHub "blob" URL of the repository root; it powers the "Open on GitHub" button
+and links to files that aren't embedded.
+
 """
 from __future__ import annotations
 
@@ -15,6 +23,8 @@ import html
 import json
 import re
 import sys
+import unicodedata
+import urllib.parse
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -24,6 +34,10 @@ AGENT_LABEL = {"strategist": "Strategist", "seo-agent": "SEO & AI visibility", "
 LIGHT = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
 DARK = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300", "#9085e9", "#e66767"]
 PRIORITY_ORDER = {"high": 0, "medium": 1, "low": 2}
+DOC_META_KEYS = ["status", "to", "from", "type", "priority", "date", "due", "campaign", "output"]
+LINK_DEPTH = 1  # also embed .md files linked from the dashboard's docs, this many hops deep
+MD_LINK = re.compile(r"\]\(\s*<?([^)\s>]+)>?(?:\s+[\"'(][^)]*)?\)|^\s*\[[^\]]+\]:\s*<?(\S+?)>?(?:\s|$)", re.M)
+MARKED_SRC = "https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"
 
 
 def esc(s) -> str:
@@ -39,6 +53,11 @@ def front_matter(text: str) -> dict:
                 k, v = line.split(":", 1)
                 out[k.strip()] = v.split("#", 1)[0].strip()
     return out
+
+
+def split_front_matter(text: str) -> tuple[dict, str]:
+    m = re.match(r"^---\s*\n(.*?)\n---[ \t]*\n?", text, re.S)
+    return (front_matter(text), text[m.end():]) if m else ({}, text)
 
 
 def title_of(text: str, fallback: str) -> str:
@@ -135,9 +154,350 @@ def column_chart(weeks: list[tuple[str, int]], w=520, h=180) -> str:
     return "".join(parts)
 
 
-def build(ws: Path, out: Path, today: dt.date) -> str:
-    rel = lambda p: esc(Path("..", p.relative_to(ws)).as_posix()) if out.parent.resolve() == (ws / "dashboards").resolve() \
-        else esc(p.resolve().as_uri())
+# ---- Doc panel: a slide-over that opens briefs, reports and strategy docs inside the dashboard ----
+PANEL_CSS = """
+.bcard:focus-visible,.dp a:focus-visible,.dp button:focus-visible{outline:2px solid var(--s1);outline-offset:2px}
+.dp-scrim{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 62%,transparent);opacity:0;visibility:hidden;
+  transition:opacity .2s ease,visibility 0s linear .2s;z-index:20}
+.dp{position:fixed;top:0;right:0;bottom:0;width:min(720px,92vw);background:var(--surface);color:var(--text);
+  border-left:1px solid var(--border);box-shadow:-12px 0 32px color-mix(in srgb,var(--text) 14%,transparent);
+  display:flex;flex-direction:column;transform:translateX(100%);visibility:hidden;
+  transition:transform .24s ease,visibility 0s linear .24s;z-index:21}
+.dp-open .dp-scrim{opacity:1;visibility:visible;transition:opacity .2s ease}
+.dp-open .dp{transform:none;visibility:visible;transition:transform .24s ease}
+.dp-head{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg)}
+.dp-path{flex:1;min-width:0;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--text2);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dp-btn{flex:none;font:inherit;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:5px 10px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.dp-btn:hover{border-color:var(--text2)}
+.dp-scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:20px 24px 40px}
+.dp-title{font-size:21px;line-height:1.3;margin:0 0 14px}
+.dp-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 16px;margin:0 0 18px;padding:14px;
+  background:var(--bg);border:1px solid var(--border);border-radius:10px}
+.dp-meta div{min-width:0} .dp-meta dt{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 3px}
+.dp-meta dd{margin:0;font-size:13px;overflow-wrap:anywhere}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:1px 9px;border-radius:10px;color:var(--text);
+  background:color-mix(in srgb,var(--c,var(--neutral)) 24%,transparent);border:1px solid color-mix(in srgb,var(--c,var(--neutral)) 55%,transparent)}
+.dp-body{font-size:14px;line-height:1.6;overflow-wrap:break-word}
+.dp-body h1,.dp-body h2,.dp-body h3,.dp-body h4{color:var(--text);text-transform:none;letter-spacing:0;line-height:1.3;margin:22px 0 8px}
+.dp-body h1{font-size:19px} .dp-body h2{font-size:16px} .dp-body h3{font-size:14px} .dp-body h4{font-size:13px}
+.dp-body p{margin:0 0 10px} .dp-body ul,.dp-body ol{margin:0 0 10px;padding-left:22px}
+.dp-body a{color:var(--s1)}
+.dp-body code{font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--grid);border-radius:4px;padding:1px 4px}
+.dp-body pre{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;overflow-x:auto;white-space:pre-wrap}
+.dp-body pre code{background:none;padding:0}
+.dp-body blockquote{margin:0 0 10px;padding:2px 12px;border-left:3px solid var(--border);color:var(--text2)}
+.dp-body hr{border:0;border-top:1px solid var(--border);margin:18px 0}
+.dp-table{overflow-x:auto;margin:0 0 12px;border:1px solid var(--border);border-radius:8px}
+.dp-table table{border-collapse:collapse;min-width:100%;font-size:13px}
+.dp-table th,.dp-table td{text-align:left;vertical-align:top;padding:6px 10px;border-bottom:1px solid var(--border)}
+.dp-table th{background:var(--bg);color:var(--text2);font-weight:600}
+.dp-table tr:last-child td{border-bottom:0}
+@media (max-width:640px){.dp{width:100vw;border-left:0}.dp-scroll{padding:16px 16px 32px}.dp-head{padding:10px 12px}}
+@media (prefers-reduced-motion:reduce){.dp,.dp-scrim,.dp-open .dp,.dp-open .dp-scrim{transition:none}}
+"""
+
+PANEL_HTML = """<div class="dp-scrim" data-dp-close></div>
+<aside class="dp" id="dp" role="dialog" aria-modal="true" aria-labelledby="dp-title" aria-hidden="true" tabindex="-1">
+<div class="dp-head"><span class="dp-path" id="dp-path"></span>
+<a class="dp-btn" id="dp-gh" target="_blank" rel="noopener noreferrer">Open on GitHub ↗</a>
+<button type="button" class="dp-btn" data-dp-close>Close</button></div>
+<div class="dp-scroll" id="dp-scroll"><h2 class="dp-title" id="dp-title"></h2><dl class="dp-meta" id="dp-meta"></dl>
+<div class="dp-body" id="dp-body"></div></div>
+</aside>"""
+
+PANEL_JS = r"""(function () {
+  var dataEl = document.getElementById('hq-docs');
+  if (!dataEl) return;
+  var data = JSON.parse(dataEl.textContent), docs = data.docs, linkBase = data.linkBase;
+  var root = document.querySelector('.viz-root'), wrap = document.querySelector('.wrap');
+  var panel = document.getElementById('dp'), gh = document.getElementById('dp-gh');
+  var byPath = {};
+  Object.keys(docs).forEach(function (id) { byPath[docs[id].path] = id; });
+  var AGENTS = __AGENTS__;
+  var STATUS = {'ready': 'var(--s1)', 'in-progress': 'var(--s4)', 'done': 'var(--s3)', 'blocked': 'var(--s8)'};
+  var PRIORITY = {'high': 'var(--s8)', 'medium': 'var(--s4)', 'low': 'var(--neutral)'};
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var current = null, trigger = null;
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function fmtDate(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || '');
+    return m ? (+m[3]) + ' ' + MONTHS[+m[2] - 1] + ' ' + m[1] : s;
+  }
+  function pill(text, color) {
+    var p = el('span', 'pill', text);
+    if (color) p.style.setProperty('--c', color);
+    return p;
+  }
+  function resolvePath(base, href) {
+    try {
+      var u = new URL(href, 'https://repo.invalid/' + base);
+      return {path: decodeURIComponent(u.pathname.replace(/^\/+/, '')), hash: u.hash};
+    } catch (e) { return null; }
+  }
+  function ghUrl(path) {
+    return linkBase ? linkBase + path.split('/').map(encodeURIComponent).join('/') : null;
+  }
+
+  function renderMeta(meta) {
+    var dl = document.getElementById('dp-meta');
+    dl.textContent = '';
+    var rows = [
+      ['Status', meta.status && pill(meta.status.replace(/-/g, ' '), STATUS[meta.status])],
+      ['Priority', meta.priority && pill(meta.priority, PRIORITY[meta.priority])],
+      ['Due', meta.due && fmtDate(meta.due)],
+      ['Created', meta.date && fmtDate(meta.date)],
+      ['Assigned to', meta.to && (AGENTS[meta.to] || meta.to)],
+      ['From', meta.from && (AGENTS[meta.from] || meta.from)],
+      ['Type', meta.type],
+      ['Campaign', meta.campaign],
+      ['Output', meta.output]
+    ];
+    rows.forEach(function (r) {
+      if (!r[1]) return;
+      var d = el('div'), dd = el('dd');
+      d.appendChild(el('dt', null, r[0]));
+      if (typeof r[1] === 'string') dd.textContent = r[1]; else dd.appendChild(r[1]);
+      d.appendChild(dd);
+      dl.appendChild(d);
+    });
+    dl.hidden = !dl.childNodes.length;
+  }
+
+  function renderBody(doc) {
+    var body = document.getElementById('dp-body');
+    body.textContent = '';
+    if (window.marked && typeof window.marked.parse === 'function') {
+      try {
+        body.innerHTML = window.marked.parse(doc.body, {gfm: true});
+      } catch (e) { body.textContent = ''; }
+    }
+    if (!body.childNodes.length) {
+      body.appendChild(el('pre', null, doc.body));
+      return;
+    }
+    Array.prototype.forEach.call(body.querySelectorAll('table'), function (t) {
+      var w = el('div', 'dp-table');
+      t.parentNode.insertBefore(w, t);
+      w.appendChild(t);
+    });
+    Array.prototype.forEach.call(body.querySelectorAll('a[href]'), function (a) {
+      var href = a.getAttribute('href');
+      if (/^#/.test(href)) return;
+      if (/^[a-z][a-z0-9+.-]*:/i.test(href) || /^\/\//.test(href)) {
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        return;
+      }
+      var r = resolvePath(doc.path, href);
+      var id = r && byPath[r.path];
+      if (id) {
+        a.setAttribute('href', '#' + id);
+        a.setAttribute('data-doc', id);
+        return;
+      }
+      var url = r && ghUrl(r.path);
+      if (url) {
+        a.setAttribute('href', url + (r.hash || ''));
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      } else {
+        a.removeAttribute('href');
+        a.title = (r ? r.path : href) + ' (not included in this dashboard)';
+      }
+    });
+  }
+
+  function show(id) {
+    var doc = docs[id];
+    if (!doc) return false;
+    var wasOpen = current !== null;
+    current = id;
+    document.getElementById('dp-path').textContent = doc.path;
+    document.getElementById('dp-path').title = doc.path;
+    var url = doc.github || ghUrl(doc.path);
+    if (url) { gh.href = url; gh.hidden = false; } else { gh.removeAttribute('href'); gh.hidden = true; }
+    document.getElementById('dp-title').textContent = doc.title;
+    renderMeta(doc.meta || {});
+    renderBody(doc);
+    document.getElementById('dp-scroll').scrollTop = 0;
+    root.classList.add('dp-open');
+    panel.setAttribute('aria-hidden', 'false');
+    if (wrap) wrap.inert = true;
+    if (!wasOpen) {
+      if (!trigger) trigger = document.querySelector('.wrap [data-doc="' + id + '"]');
+      panel.querySelector('[data-dp-close].dp-btn').focus({preventScroll: true});
+    } else {
+      panel.focus({preventScroll: true});
+    }
+    return true;
+  }
+  function hide() {
+    if (current === null) return;
+    current = null;
+    root.classList.remove('dp-open');
+    panel.setAttribute('aria-hidden', 'true');
+    if (wrap) wrap.inert = false;
+    var t = trigger;
+    trigger = null;
+    if (t && document.contains(t)) t.focus({preventScroll: true});
+  }
+
+  function hashId() {
+    var h = decodeURIComponent((location.hash || '').slice(1));
+    return docs[h] ? h : null;
+  }
+  function setHash(id) {
+    var target = id ? '#' + id : location.pathname + location.search;
+    if (id ? location.hash === target : !location.hash) return;
+    try { history.pushState(null, '', target); }
+    catch (e) { try { location.hash = id || ''; } catch (e2) { /* sandboxed: the panel still works */ } }
+  }
+  function open(id, from) {
+    if (from && current === null) trigger = from;
+    if (show(id)) setHash(id);
+  }
+  function close() {
+    if (current === null) return;
+    hide();
+    if (hashId()) setHash(null);
+  }
+  function sync() {
+    var id = hashId();
+    if (id) { if (id !== current) show(id); } else hide();
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[data-doc]');
+    if (a && docs[a.getAttribute('data-doc')] && !e.metaKey && !e.ctrlKey && !e.shiftKey && e.button === 0) {
+      e.preventDefault();
+      open(a.getAttribute('data-doc'), a);
+      return;
+    }
+    if (e.target.closest && e.target.closest('[data-dp-close]')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (current === null) return;
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key !== 'Tab') return;
+    var f = Array.prototype.filter.call(panel.querySelectorAll('a[href],button,[tabindex]:not([tabindex="-1"])'),
+      function (x) { return !x.hidden && x.offsetParent !== null; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  window.addEventListener('popstate', sync);
+  window.addEventListener('hashchange', sync);
+  window.addEventListener('load', function () { if (current) renderBody(docs[current]); });
+  sync();
+})();"""
+
+
+def repo_root(ws: Path) -> Path:
+    """The git repository root above the workspace, or the workspace's parent if it isn't in git."""
+    w = ws.resolve()
+    for d in (w, *w.parents):
+        if (d / ".git").exists():
+            return d
+    return w.parent
+
+
+class Docs:
+    """Collects the .md files the dashboard links to, so they can be embedded and opened in a panel."""
+
+    def __init__(self, ws: Path, out: Path, link_base: str | None):
+        self.ws, self.out_dir, self.root = ws.resolve(), out.parent.resolve(), repo_root(ws)
+        self.link_base = (link_base.rstrip("/") + "/") if link_base else None
+        self.docs: dict[str, dict] = {}      # id -> doc
+        self.ids: dict[Path, str] = {}       # resolved path -> id
+
+    def repo_path(self, p: Path) -> str:
+        p = p.resolve()
+        try:
+            return p.relative_to(self.root).as_posix()
+        except ValueError:
+            return p.as_posix()
+
+    def github(self, p: Path) -> str | None:
+        rp = self.repo_path(p)
+        return self.link_base + urllib.parse.quote(rp) if self.link_base and not rp.startswith("/") else None
+
+    def _new_id(self, p: Path) -> str:
+        stem = unicodedata.normalize("NFKD", p.stem).encode("ascii", "ignore").decode()
+        base = "doc-" + (re.sub(r"[^a-z0-9]+", "-", stem.lower()).strip("-") or "file")
+        i, n = base, 2
+        while i in self.docs:
+            i, n = f"{base}-{n}", n + 1
+        return i
+
+    def add(self, p: Path) -> str:
+        p = p.resolve()
+        if p in self.ids:
+            return self.ids[p]
+        text = p.read_text(errors="replace")
+        meta, body = split_front_matter(text)
+        title = title_of(body, p.stem)
+        body = re.sub(r"\A\s*#[ \t]+[^\n]*\n?", "", body, count=1)  # the H1 is shown as the panel title
+        doc_id = self._new_id(p)
+        self.ids[p] = doc_id
+        self.docs[doc_id] = {"path": self.repo_path(p), "title": title, "github": self.github(p),
+                             "meta": {k: meta[k] for k in DOC_META_KEYS if meta.get(k)}, "body": body.strip("\n") + "\n"}
+        return doc_id
+
+    def link(self, p: Path) -> str:
+        """The attributes of an <a> that points at a workspace file."""
+        p = p.resolve()
+        if p.suffix.lower() == ".md":
+            doc_id = self.add(p)
+            return f'href="#{doc_id}" data-doc="{doc_id}"'
+        if p.parent == self.out_dir:  # sibling dashboards stay relative; publish them next to the HQ
+            return f'href="{esc(p.name)}"'
+        url = self.github(p)
+        if not url:
+            url = Path("..", p.relative_to(self.ws)).as_posix() if self.out_dir == self.ws / "dashboards" else p.as_uri()
+        return f'href="{esc(url)}"'
+
+    def linked_files(self, doc_id: str) -> list[Path]:
+        base = (self.root / self.docs[doc_id]["path"]).parent
+        found = []
+        for m in MD_LINK.finditer(self.docs[doc_id]["body"]):
+            target = urllib.parse.unquote((m.group(1) or m.group(2)).split("#", 1)[0])
+            if not target or re.match(r"^[a-z][a-z0-9+.-]*:", target, re.I):
+                continue
+            f = (self.root / target.lstrip("/")) if target.startswith("/") else (base / target)
+            f = f.resolve()
+            if f.suffix.lower() == ".md" and f.is_file() and (self.root == f or self.root in f.parents):
+                found.append(f)
+        return found
+
+    def follow_links(self, depth: int = LINK_DEPTH):
+        frontier = list(self.docs)
+        for _ in range(depth):
+            nxt = []
+            for doc_id in frontier:
+                for f in self.linked_files(doc_id):
+                    if f not in self.ids:
+                        nxt.append(self.add(f))
+            frontier = nxt
+
+    def json_block(self) -> str:
+        data = {"linkBase": self.link_base, "docs": self.docs}
+        js = json.dumps(data, ensure_ascii=True, separators=(",", ":"))
+        js = js.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+        return f'<script type="application/json" id="hq-docs">{js}</script>'
+
+
+def build(ws: Path, out: Path, today: dt.date, link_base: str | None = None) -> str:
+    docs = Docs(ws, out, link_base)
+    link = docs.link
     brand = "Marketing"
     bb = ws / "brand-brief.md"
     if bb.exists():
@@ -201,7 +561,7 @@ def build(ws: Path, out: Path, today: dt.date) -> str:
         meta = " · ".join(x for x in [b.get("type", ""), b.get("priority", ""),
                                        f"due {due:%d %b}" if due else ""] if x)
         flag = "<span class='late'>⚠ overdue</span>" if late else ""
-        return (f"<a class='bcard' href='{rel(b['path'])}'><span class='chip' style='--c:{color.get(b['to'], 'var(--neutral)')}'>"
+        return (f"<a class='bcard' {link(b['path'])}><span class='chip' style='--c:{color.get(b['to'], 'var(--neutral)')}'>"
                 f"{esc(AGENT_LABEL.get(b['to'], b['to']))}</span><div class='bt'>{esc(b['title'])}</div>"
                 f"<div class='bm'>{esc(meta)} {flag}</div></a>")
 
@@ -230,7 +590,7 @@ def build(ws: Path, out: Path, today: dt.date) -> str:
     type_chart = bars([(t.title(), n, "var(--s1)") for t, n in types.most_common(8)])
 
     # reports and strategy
-    reports = "".join(f"<li><a href='{rel(f)}'>{esc(f.stem)}</a></li>" for f in recent_files(ws / "reports", 8)) \
+    reports = "".join(f"<li><a {link(f)}>{esc(f.stem)}</a></li>" for f in recent_files(ws / "reports", 8)) \
         or "<li class='muted'>No reports yet</li>"
     strat_rows = []
     for name in ("marketing-strategy", "seo", "content", "social", "paid", "email"):
@@ -240,15 +600,16 @@ def build(ws: Path, out: Path, today: dt.date) -> str:
             nr = parse_date(m.group(1)) if m else None
             state = ("<span class='warn'>⚠ review due</span>" if nr and nr <= today
                      else f"review {nr:%d %b}" if nr else "no review date")
-            strat_rows.append(f"<li><a href='{rel(f)}'>{name}</a> <span class='muted'>· {state}</span></li>")
+            strat_rows.append(f"<li><a {link(f)}>{name}</a> <span class='muted'>· {state}</span></li>")
         else:
             strat_rows.append(f"<li class='muted'>{name} — not written yet</li>")
-    dl_rows = "".join(f"<li><b>{d:%d %b}</b> · {esc(t)} <span class='muted'>· {esc(who)}</span></li>"
-                      for d, t, who, _ in deadlines[:8]) or "<li class='muted'>No upcoming deadlines</li>"
+    dl_rows = "".join(f"<li><b>{d:%d %b}</b> · <a {link(p)}>{esc(t)}</a> <span class='muted'>· {esc(who)}</span></li>"
+                      for d, t, who, p in deadlines[:8]) or "<li class='muted'>No upcoming deadlines</li>"
 
     cal = sorted((ws / "calendar").glob("*.md"), reverse=True)
-    cal_link = f"<a href='{rel(cal[0])}'>{esc(cal[0].stem)}</a>" if cal else "<span class='muted'>none yet</span>"
+    cal_link = f"<a {link(cal[0])}>{esc(cal[0].stem)}</a>" if cal else "<span class='muted'>none yet</span>"
 
+    docs.follow_links()
     lv = "".join(f"--s{i + 1}:{c};" for i, c in enumerate(LIGHT))
     dv = "".join(f"--s{i + 1}:{c};" for i, c in enumerate(DARK))
     dark_vars = f"color-scheme:dark;--bg:#111110;--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#8f8e88;--grid:#2c2c2a;--border:#30302d;--neutral:#5f5e5a;{dv}"
@@ -280,7 +641,7 @@ h1{{font-size:24px;margin:0}} h2{{font-size:15px;margin:0 0 12px}} h3{{font-size
 ul{{margin:0;padding-left:18px}} li{{margin:4px 0}}
 .toggle{{float:right;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer}}
 @media (max-width:760px){{.board{{grid-template-columns:1fr}}}}
-</style></head>
+{PANEL_CSS}</style></head>
 <body><div class="viz-root"><div class="wrap">
 <button class="toggle" onclick="var r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'">Light / dark</button>
 <h1>Marketing HQ — {esc(brand)}</h1>
@@ -297,7 +658,13 @@ ul{{margin:0;padding-left:18px}} li{{margin:4px 0}}
 <div class="card"><h2>Latest reports</h2><ul>{reports}</ul></div>
 <div class="card"><h2>Strategy</h2><ul>{''.join(strat_rows)}</ul><h2 style="margin-top:16px">Last 30 days by type</h2>{type_chart}</div>
 </div>
-</div></div></body></html>"""
+</div>
+{PANEL_HTML}
+</div>
+{docs.json_block()}
+<script src="{MARKED_SRC}" defer></script>
+<script>{PANEL_JS.replace('__AGENTS__', json.dumps(AGENT_LABEL))}</script>
+</body></html>"""
 
 
 def main(argv=None) -> int:
@@ -305,6 +672,8 @@ def main(argv=None) -> int:
     ap.add_argument("--workspace", default="marketing")
     ap.add_argument("--out", default=None)
     ap.add_argument("--today", help="override today's date (YYYY-MM-DD)")
+    ap.add_argument("--link-base", help="GitHub blob URL of the repository root, e.g. "
+                    "https://github.com/<owner>/<repo>/blob/main/ (for 'Open on GitHub' and non-embedded files)")
     a = ap.parse_args(argv)
     ws = Path(a.workspace)
     if not ws.exists():
@@ -313,7 +682,7 @@ def main(argv=None) -> int:
     out = Path(a.out) if a.out else ws / "dashboards" / "hq.html"
     out.parent.mkdir(parents=True, exist_ok=True)
     today = dt.date.fromisoformat(a.today) if a.today else dt.date.today()
-    out.write_text(build(ws, out, today))
+    out.write_text(build(ws, out, today, a.link_base))
     print(f"Marketing HQ written to {out}")
     return 0
 
