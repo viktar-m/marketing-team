@@ -21,6 +21,7 @@ marketing/
 ├── hub.html            ← the Marketing Hub: open this
 ├── index.md            ← list of all work (generated; don't edit)
 ├── brand-brief.md
+├── goals.md            ← the goals every task works towards (one `## heading` per goal, with `By: YYYY-MM-DD`)
 ├── artifacts.md        ← links to work that lives in Claude (designs, design system, videos)
 ├── strategy/           marketing-strategy.md · seo.md · content.md · social.md · paid.md
 ├── web/                blog articles, new pages, page refreshes
@@ -48,6 +49,7 @@ title: Homepage refresh
 type: page-refresh      # blog · page · page-refresh · social · calendar · video · graphic · ad · ad-review · sales · launch · campaign · research · strategy · review
 agent: web-content-agent
 status: draft           # draft · needs-review · approved · published
+goal: site-sells-the-fractional-offer   # optional: the goal this serves (a heading in goals.md, as a slug)
 date: 2026-11-06
 summary: New homepage copy that leads with the fractional offer.
 needs_you:
@@ -67,6 +69,26 @@ Short: what to check before publishing ([VERIFY] items), where to paste it, inte
 - `needs_you` lists only real actions for the user (approve, choose, supply, verify). Empty list if none. These become the Hub's inbox.
 - Supporting material goes **inside the same file** under `## Notes for you` or an appendix. Create a second file only when it is genuinely separate (research notes for a large analysis, a launch kit's messaging doc, graphics).
 - Keep the status current: set `approved` / `published` when the user says so.
+- `goal:` links the task to a goal in `marketing/goals.md`. Copy it from the brief, or pick the goal the work clearly serves; leave it out if none fits.
+- Optional `area:` overrides the Hub area when the folder or agent doesn't say it (`strategy` · `content` · `seo` · `social` · `design` · `ads` · `gtm`).
+
+### How work shows up in the Hub: areas and stages
+
+The Hub is a simple project board with two filters.
+
+- **Area** (one per agent): Strategy & brand · Content · SEO & AI visibility · Social & video · Design · Ads · GTM & sales. Taken from `area:`, else the folder, else the agent.
+- **Stage**, taken from `status:`:
+
+| Stage | Briefs (`queue/`) | Deliverables |
+|---|---|---|
+| To do | `ready` | — |
+| In progress | `in-progress` | — |
+| Needs you | — | `draft`, `needs-review` |
+| Done | `done` with no output file | `approved`, `published` |
+
+A brief and the file it produced are **one task**: once `output:` points to the deliverable, the Hub shows the deliverable (with a link back to the brief). So the user sees each piece of work once, moving left to right.
+
+**Moving tasks when the user says so:** "approve X" / "X is live" → set the deliverable's status to `approved` / `published`; "start X" → do the queued brief; "drop X" → delete the brief; "move X to next week" → change `due:`. Then rebuild the Hub. Never move a task to Done without the user.
 
 ## 4. Briefs: the work queue, used sparingly
 
@@ -75,7 +97,7 @@ A brief is a note from one agent to another about work **for later**. It is not 
 - **Never create a brief for the user's own request** — the request is the brief. Just do the work.
 - **Don't create follow-up briefs on your own.** Suggest follow-ups in your reply ("Want LinkedIn posts about it?"). Create briefs only when the user says yes, or when the user's request itself needs several agents (e.g., a launch).
 - At most **3 briefs** per task unless the user asks for more.
-- Briefs live in `marketing/queue/`, named for the work (`linkedin-posts-homepage.md`), using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md` — short. Status: `ready` → `in-progress` → `done` (with `output:` set to the deliverable's path).
+- Briefs live in `marketing/queue/`, named for the work (`linkedin-posts-homepage.md`), using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md` — short. Status: `ready` → `in-progress` → `done` (with `output:` set to the deliverable's path). Set `goal:` when the work serves one.
 - Subagents can't call each other; the team lead relays queue items.
 
 ## 5. Replying to the user: the done message

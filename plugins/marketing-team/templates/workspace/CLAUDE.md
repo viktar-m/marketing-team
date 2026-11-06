@@ -7,7 +7,7 @@ This folder is the workspace of an AI marketing team (the **marketing-team** plu
 
 ## How to work here
 
-1. **Start of a session:** if this is a git repo, `git pull`. If the user starts without a task or asks "what's going on", show the Hub (`marketing-team:hq`) and list what needs them.
+1. **Start of a session:** if this is a git repo, `git pull`. If the user starts without a task or asks "what's going on", show the Hub (`marketing-team:hq`) and list what needs them. "Approve / start / drop / reschedule X" moves a task on the board (change its status or due date, rebuild the Hub).
 2. **Every request** goes through `marketing-team:team-lead`. Read `marketing/brand-brief.md` and the relevant `marketing/strategy/*.md` first.
 3. **One task, one deliverable file** with the standard header; no briefs unless the user agrees to follow-up work.
 4. **Reply with the short done message** — title, one link, up to 3 things that need the user, one suggested next step. No file paths or process narration.

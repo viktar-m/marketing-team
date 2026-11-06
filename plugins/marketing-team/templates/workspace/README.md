@@ -6,7 +6,7 @@ Private working files for the [AI marketing team](https://github.com/viktar-m/ma
 
 ## Start here
 
-Open **`marketing/hub.html`** — the Marketing Hub: what needs you, the work queue, and every piece of work, readable in one place. (Or ask Claude: "show me the Hub".)
+Open **`marketing/hub.html`** — the Marketing Hub: a board of every task, filtered by area and stage (to do → in progress → needs you → done), with goal progress and a reader for each piece of work. Move tasks by telling Claude: "approve X", "start X", "push X to next week". (Or ask Claude: "show me the Hub".)
 
 ## Setup checklist
 
@@ -25,6 +25,7 @@ Open **`marketing/hub.html`** — the Marketing Hub: what needs you, the work qu
 ```
 marketing/
 ├── hub.html          the Marketing Hub — open this
+├── goals.md          your goals (the Hub tracks progress)
 ├── index.md          list of all work (generated)
 ├── brand-brief.md    who we are, how we sound, who we sell to
 ├── strategy/         the rules the team follows

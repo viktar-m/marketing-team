@@ -3,6 +3,7 @@ title: LinkedIn posts about the homepage refresh
 type: brief
 to: social-agent        # strategist · seo-agent · web-content-agent · social-agent · design-agent · ads-agent · gtm-agent
 from: web-content-agent
+goal:                   # optional: a goal from marketing/goals.md (slug of its heading)
 priority: medium        # high · medium · low
 status: ready           # ready · in-progress · done
 date: YYYY-MM-DD

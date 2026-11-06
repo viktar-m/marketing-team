@@ -47,7 +47,7 @@ Every article, new page and refresh suggests the links it should contain, and li
 When your Claude account offers them, the designer makes graphics as editable **Claude Design** canvases (you tweak and export them yourself), keeps the brand kit as a **Claude Design System** that every design uses, and the social & video agent can make videos in **Claude Motion** from its video brief. Without them, the team falls back to rendered PNGs and a paste-ready Motion brief. Links to everything that lives in Claude are kept in the workspace's `marketing/artifacts.md` and shown on the HQ.
 
 ### Visual output
-Reports come with self-contained dashboards (light and dark mode, colour-blind-safe palette, tooltips, a table view). The **Marketing Hub** is the one page you open: what needs you, the work queue, and every deliverable with a built-in reader, plus links to dashboards and designs. The designer renders graphics to PNG at exact platform sizes.
+Reports come with self-contained dashboards (light and dark mode, colour-blind-safe palette, tooltips, a table view). The **Marketing Hub** is the one page you open: a simple project board you filter by **area** (strategy, content, SEO & AI visibility, social & video, design, ads, GTM & sales) and **stage** (to do → in progress → needs you → done), with progress towards your goals, what needs you, and a built-in reader for every piece of work. The designer renders graphics to PNG at exact platform sizes.
 
 ## How it works
 
@@ -90,13 +90,14 @@ The team works in a `marketing/` folder — a local folder or a **private git re
 ```
 marketing/
 ├── hub.html          ← the Marketing Hub: open this
+├── goals.md          ← your goals; the Hub shows progress
 ├── brand-brief.md    strategy/
 ├── web/  social/  video/  design/  ads/  sales/
 ├── launches/  campaigns/  research/
 └── queue/            briefs waiting for an agent
 ```
 
-**How the team keeps it usable:** every task produces one deliverable file (a short header — status, summary, what needs you — then the usable content first), the reply is a short "done" message with one link, and briefs exist only for follow-up work you agreed to. The **Marketing Hub** shows what needs you, the queue, and every deliverable with a built-in reader.
+**How the team keeps it usable:** every task produces one deliverable file (a short header — status, summary, what needs you — then the usable content first), the reply is a short "done" message with one link, and briefs exist only for follow-up work you agreed to. The **Marketing Hub** shows every task once, as a card that moves from to do to done; you move it by telling Claude ("approve the homepage refresh").
 
 ## Design principles
 
