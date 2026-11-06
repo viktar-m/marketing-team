@@ -6,12 +6,7 @@ Private working files for the [AI marketing team](https://github.com/viktar-m/ma
 
 ## Start here
 
-| | |
-|---|---|
-| Team dashboard | [`marketing/dashboards/hq.html`](marketing/dashboards/hq.html) (download it, or ask Claude to "show me the HQ") |
-| Brand brief | [`marketing/brand-brief.md`](marketing/brand-brief.md) |
-| Work queue | [`marketing/briefs/`](marketing/briefs/) |
-| Everything produced | [`marketing/content-inventory.md`](marketing/content-inventory.md) |
+Open **`marketing/hub.html`** — the Marketing Hub: what needs you, the work queue, and every piece of work, readable in one place. (Or ask Claude: "show me the Hub".)
 
 ## Setup checklist
 
@@ -29,16 +24,12 @@ Private working files for the [AI marketing team](https://github.com/viktar-m/ma
 
 ```
 marketing/
-├── brand-brief.md         who we are, how we sound, who we sell to
-├── content-inventory.md   everything the team has produced
-├── strategy/              strategist's rules for each channel
-├── briefs/                handoffs between agents (the work queue)
-├── campaigns/  launches/  plans and timelines
-├── content/               blog, pages, refreshes, social, video
-├── design/                brand kit, assets (add yours), graphics
-├── ads/  sales/           ad plans and reports; sales materials
-├── ai-visibility/         tracker config, daily data, history
-├── site/                  site index and internal-link tasks
-├── reports/  calendar/    audits, reviews; weekly social calendars
-└── dashboards/            hq.html, ai-visibility.html, …
+├── hub.html          the Marketing Hub — open this
+├── index.md          list of all work (generated)
+├── brand-brief.md    who we are, how we sound, who we sell to
+├── strategy/         the rules the team follows
+├── web/ social/ video/ design/ ads/ sales/      the work, by area
+├── launches/ campaigns/ research/               plans, analyses, audits
+├── queue/            briefs waiting for an agent
+└── site/ ai-visibility/ dashboards/             the team's working data
 ```

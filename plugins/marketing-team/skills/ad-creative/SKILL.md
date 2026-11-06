@@ -30,8 +30,10 @@ Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketi
 3. **LinkedIn / Meta.** Per angle: primary/intro text (hook in the first line), headline, description, CTA button choice, and a **visual concept**: what the image or video shows, the text on it (≤ 6–8 words), format (single image, carousel, video).
 4. **Message match.** Each ad's promise appears in the landing page headline or first screen. If not, flag it.
 5. **Policy check.** No unverifiable superlatives ("best", "#1") without proof, no implying personal characteristics on Meta ("Are you struggling with…" about health, finances, etc.), no misleading urgency, trademark care when naming competitors, claims within the brand brief's red lines.
-6. **Visuals.** Write one brief `to: design-agent` with every creative: angle, visual concept, on-image text, sizes per platform (see the `graphic` skill's size table).
+6. **Visuals.** Describe every creative for the design agent (queue it as one brief only if the user says yes): angle, visual concept, on-image text, sizes per platform (see the `graphic` skill's size table).
 
 ## Output
 
-`marketing/ads/campaigns/<slug>/creative-YYYY-MM-DD.md`: angle summary and test plan, then per platform a table of every field with its character count, the visual concepts, the design brief path, and anything to verify. Format the Google assets so they can be pasted into the platform or an upload sheet.
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+`marketing/ads/<name>-ad-copy.md`: angle summary and test plan, then per platform a table of every field with its character count, the visual concepts, the design brief path, and anything to verify. Format the Google assets so they can be pasted into the platform or an upload sheet.

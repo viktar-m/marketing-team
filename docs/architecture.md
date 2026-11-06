@@ -27,7 +27,7 @@ flowchart TD
     O --> R[strategist: brand-review]
     T[GitHub Action<br/>ai_visibility.py daily] -->|history.csv| AV[(ai-visibility/)]
     AV --> SEO
-    O & Q & AV --> HQ[hq.py → dashboards/hq.html]
+    O & Q & AV --> HQ[hub.py → hub.html]
 ```
 
 ## Deciding is separate from making
@@ -42,7 +42,7 @@ Claude routes by **description**: each agent and skill description says what it 
 
 ## Handoffs
 
-Subagents can't call each other. Agents write **briefs**, Markdown files with a `to:`, `type:`, `priority:`, `due:` and `status:` header. The main session (the team lead) passes each brief to the agent named in `to:`, handling dependencies along the way: copy before design, design before ads go live, approved messaging before launch work. Briefs are files, so a scheduled run can pick up where the previous one stopped, and the HQ can show the queue.
+Subagents can't call each other. Briefs are only for follow-up work the user agreed to (or that a multi-agent request needs). Agents write **briefs**, Markdown files with a `to:`, `type:`, `priority:`, `due:` and `status:` header. The main session (the team lead) passes each brief to the agent named in `to:`, handling dependencies along the way: copy before design, design before ads go live, approved messaging before launch work. Briefs are files, so a scheduled run can pick up where the previous one stopped, and the HQ can show the queue.
 
 ## Strategy as rules
 

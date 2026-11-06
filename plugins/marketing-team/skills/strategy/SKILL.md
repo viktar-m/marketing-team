@@ -5,7 +5,7 @@ description: 'Create or update the marketing strategy and channel strategies - c
 
 # Strategy
 
-Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, existing `marketing/strategy/` files, recent reports (SEO, AI visibility, ads, performance) and the content inventory.
+Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, existing `marketing/strategy/` files, recent reports (SEO, AI visibility, ads, performance) and `marketing/index.md`.
 
 Follow `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` and `${CLAUDE_PLUGIN_ROOT}/templates/analysis-standards.md`: every priority and rule must be specific to this company and backed by evidence or labelled as a hypothesis.
 
@@ -30,7 +30,7 @@ Write `marketing-strategy.md` first if it doesn't exist; channel files depend on
 2. **Choices.** Decide priorities explicitly — which audiences, topics, channels and formats get effort, and which don't. A strategy that says yes to everything isn't one.
 3. **Targets.** Set 3–5 measurable objectives per file with a baseline and a date (e.g., "AI share of voice on category questions from 20% to 35% by 31 March"). If there's no baseline, make measuring it the first action.
 4. **Rules.** Write the rules agents must follow as short imperative statements under a `## Rules` heading (e.g., "Every blog article targets a keyword from a priority cluster", "No more than 1 in 4 social posts is promotional", "Pause any ad set with CPA above 2× target after 1,000 impressions"). Keep it under 15 rules per file.
-5. **Plan.** List the next 30/60/90-day actions, each mapped to an agent. Turn the next 30 days into briefs (at most 5) with `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`.
+5. **Plan.** List the next 30/60/90-day actions, each mapped to an agent. Once the user approves the strategy, queue the next 30 days' work as briefs (at most 5) with `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`.
 6. **Review date.** End each file with `Next review: YYYY-MM-DD` (usually quarterly).
 
 ## File format
@@ -52,5 +52,7 @@ Updated YYYY-MM-DD · Owner: strategist · Next review: YYYY-MM-DD
 When updating, keep the history short: replace the content and note what changed and why under "Changes since last version".
 
 ## Output
+
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
 
 The strategy file(s), the briefs created, and a summary for the user: the 3 most important decisions, the targets, and anything you need them to confirm (budget, priorities between product lines).

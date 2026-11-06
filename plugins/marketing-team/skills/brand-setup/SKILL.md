@@ -19,7 +19,7 @@ Any mix of: the company website URL, existing brand or style guides, sample cont
 3. **Infer voice from evidence.** Derive the voice section from the user's own published writing: quote one real sentence that sounds right as the "we sound like" example.
 4. **Mark gaps.** Anything you couldn't find gets `TODO:` with a short question. Don't invent positioning, audiences, statistics or competitors.
 5. **Ask once.** Put the open TODOs to the user as one short list of questions (at most 8), most important first. Positioning, audience and voice matter most; social cadence and hashtags matter least.
-6. **Finalise.** Fold the answers in, remove resolved TODOs, and save. Create `marketing/content-inventory.md` with its header if it doesn't exist (see conventions).
+6. **Finalise.** Fold the answers in, remove resolved TODOs, and save. Rebuild the Hub (conventions §6).
 7. **Recommend next steps** to the user, in this order: the strategist's `strategy` (marketing strategy first), the design agent's `brand-kit`, and `ai-visibility` setup using section 10 of the brief.
 
 ## Updating an existing brief

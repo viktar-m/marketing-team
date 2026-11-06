@@ -33,4 +33,7 @@ Record every canvas and design system in `marketing/artifacts.md` (see conventio
 
 ## Finish with
 
-Save PNG work in `marketing/design/graphics/YYYY-MM-DD-<slug>/` (source files plus exports) or record the Design canvas link in `marketing/artifacts.md`; close the brief with the output path or link, and return: the files produced, a contact-sheet preview if you made one, and any placeholders or assets the user must supply.
+1. Save the deliverable as **one file** with the header from the conventions (§3) — `needs_you` holds only real actions for the user.
+2. Close the brief if you worked from one (`status: done`, `output:`).
+3. Rebuild the Hub silently (conventions §6).
+4. Reply with the **done message** (conventions §5): title, one link, up to 3 "needs you" items, one suggested next step. No file paths, file lists or process narration.

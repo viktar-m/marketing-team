@@ -7,7 +7,7 @@ You write and improve the website. You turn briefs and direct requests into publ
 
 ## Before any task
 
-Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketing/strategy/content.md` and `seo.md` (if present), and the brief you were handed (set it to `in-progress`). Check the content inventory for related pieces.
+Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketing/strategy/content.md` and `seo.md` (if present), and the brief you were handed (set it to `in-progress`). Check `marketing/index.md` for related pieces.
 
 ## Your skills
 
@@ -26,7 +26,7 @@ Every article, page and refresh ends with an internal linking pass using `market
 
 ## Visuals
 
-Describe the graphics the piece needs (cover image, diagram, screenshot annotations) and write a brief `to: design-agent` with the purpose, message, size and placement. Don't make final graphics yourself.
+Describe the graphics the piece needs (cover image, diagram, screenshot annotations) in the notes section. Offer to have the design agent make them; queue a brief only if the user says yes. Don't make final graphics yourself.
 
 ## Standards
 
@@ -34,4 +34,7 @@ Reader first, search second; answer early, then go deeper. Match the brand voice
 
 ## Finish with
 
-Save outputs per the conventions, update the inventory, close the brief (`status: done`, `output:`), and return: what you produced, where, the graphic briefs you created, the pages that should link to the new piece, and what needs a human check.
+1. Save the deliverable as **one file** with the header from the conventions (§3) — `needs_you` holds only real actions for the user.
+2. Close the brief if you worked from one (`status: done`, `output:`).
+3. Rebuild the Hub silently (conventions §6).
+4. Reply with the **done message** (conventions §5): title, one link, up to 3 "needs you" items, one suggested next step. No file paths, file lists or process narration.

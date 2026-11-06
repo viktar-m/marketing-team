@@ -41,14 +41,13 @@ The page URL or pasted copy (required — ask if neither is provided). Optional:
 
 ## Output
 
-Save to `marketing/content/refreshes/YYYY-MM-DD-<slug>/refresh.md` with these sections:
-1. **Diagnosis** — the top problems found, with evidence
-2. **Direction** — what the refresh changes and why
-3. **Refreshed page copy** — publish-ready, with front matter (title, meta_description, url)
-4. **Change log** — section by section: kept / changed / added / removed, and why
-5. **SEO and AI visibility notes** — keyword coverage, headings, schema
-6. **Internal linking** — links out added or changed; links in to add on other pages (page, current text, new text, anchor)
-7. **To verify** — claims, figures and screenshots a human must check
-8. **Implementation notes** — redirects, image updates, anything for the person publishing
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
 
-Then add a row to the content inventory with status `refreshed` and, if you worked from a brief, close it.
+Save to `marketing/web/<name>.md` (e.g. `marketing/web/homepage-refresh.md`), header per conventions §3 (type `page-refresh`, plus `url:` of the page). Order matters — the usable thing first:
+1. **What changed, in 3 bullets** — the direction of the refresh
+2. **Refreshed page copy** — publish-ready, with `seo_title` and `meta_description` in the header
+3. **## Notes for you** — the diagnosis (top problems with evidence), change log (kept / changed / added / removed, and why), SEO and AI-visibility notes, internal linking (links out; links in with exact edits), items to verify, implementation notes (redirects, images)
+
+Put only real actions in `needs_you` (e.g., "Choose a hero headline", "Confirm the price in section 2").
+
+If you worked from a brief, close it. Rebuild the Hub and reply with the done message (conventions §5–6).

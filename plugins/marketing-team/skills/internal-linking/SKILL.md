@@ -20,7 +20,7 @@ Indexed: YYYY-MM-DD · Source: <sitemap URL>
 ```
 
 - If it's missing or older than 30 days, build it: fetch the sitemap (try `/sitemap.xml`, `/sitemap_index.xml`, or the `Sitemap:` line in `/robots.txt`). Record every URL with its type (product, pricing, blog, docs, landing, comparison, other). Fetch titles and topics for the pages that matter most: commercial pages from the brief, and pages in the same section and topic as the current task. For large sites (500+ URLs), index all URLs but only fetch details for the relevant sections.
-- Add pages the team produced since the last index from the content inventory.
+- Add pages the team produced since the last index from `marketing/index.md`.
 - Use connected tools when available (Search Console's top pages, an SEO tool's site crawl) to mark the pages with the most traffic or links — they're the strongest pages to link **from**.
 
 ## Step 2 — Links out (inside the new or updated piece)
@@ -51,4 +51,4 @@ Indexed: YYYY-MM-DD · Source: <sitemap URL>
 
 ## Standalone audit
 
-For "fix our internal linking": refresh the index, then report orphan pages (no internal links in), important pages with few links in, broken internal links, and over-optimised anchors — with a prioritised list of edits in the same format, saved to `marketing/reports/YYYY-MM-DD-internal-linking.md`.
+For "fix our internal linking": refresh the index, then report orphan pages (no internal links in), important pages with few links in, broken internal links, and over-optimised anchors — with a prioritised list of edits in the same format, saved to `marketing/research/internal-linking-<month>.md`.

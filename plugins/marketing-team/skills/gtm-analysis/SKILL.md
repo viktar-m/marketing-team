@@ -25,7 +25,7 @@ At minimum:
 2. Each serious alternative's own pricing page and marketplace listing, dated — including native/"do nothing", build-it-yourself, spreadsheet workflows, free/open-source options and the platform vendor's own moves.
 3. A sweep for entrants and changes in the last 12 months.
 4. Platform rules that affect GTM (marketplace listing and security review, revenue share, accessibility/procurement requirements in target sectors).
-5. Save notes with sources to `marketing/reports/YYYY-MM-DD-<product>-research.md`.
+5. Save notes with sources to `marketing/research/<product>-research-notes.md`.
 
 ## Step 3 — Calculate
 
@@ -37,7 +37,7 @@ Before writing, compute with the client's real numbers (show the math in the rep
 
 ## Step 4 — Write the report
 
-Save to `marketing/launches/<slug>/gtm-analysis.md` (or `marketing/reports/YYYY-MM-DD-gtm-analysis-<slug>.md` if no launch folder fits), following the structure in the analysis standards:
+Save to `marketing/launches/<name>/gtm-analysis.md` (or `marketing/research/gtm-analysis-<name>.md` if no launch folder fits), with the header from the conventions (§3, type `research`, `needs_you` = the founder decisions that need an answer), following the structure in the analysis standards:
 
 1. **What it is, in simple words** — plain explanation + a concrete scenario; the 4–6 capabilities that matter, in user language
 2. **Why it exists** — the underlying problems

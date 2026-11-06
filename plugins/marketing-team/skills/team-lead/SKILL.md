@@ -52,18 +52,17 @@ Subagents don't see this conversation. Each delegation includes: the user's requ
 - **Strategic analysis** of a product, market or GTM (new product, new client, "analyse X", "GTM motions") → `marketing-team:gtm-agent` with the `gtm-analysis` skill. If the user didn't give questions, ask once whether they have the founder's questions; if they're not around, let the agent derive them.
 - **Check the result** against the self-review in `${CLAUDE_PLUGIN_ROOT}/templates/analysis-standards.md` before showing it. If it fails the generic-advice test, send it back with the specific gaps. One brief per delegation; independent briefs can run in parallel (e.g., web content and design for different pieces).
 
-## 4. Relay briefs
+## 4. Relay the queue (only what the user agreed to)
 
-Agents hand work on by writing briefs in `marketing/briefs/` with a `to:` field. After each agent returns:
-1. Collect the new brief paths it lists.
-2. Hand each `ready` brief to the agent named in `to:`, highest priority and earliest `due:` first.
-3. Respect dependencies: copy before design (a graphic needs its headline), design before ads go live, messaging approval before launch assets.
-4. Stop and ask the user when a brief needs their decision (approval of messaging, offers, budgets) or assets only they have.
-5. In unattended (scheduled) runs, complete at most 3 briefs per routine and leave the rest `ready` for the next run.
+Briefs exist only for work the user approved or that their request itself needs from several agents (conventions §4).
+1. When an agent returns, look for briefs it queued in `marketing/queue/` and for follow-ups it *suggested*.
+2. Suggested follow-ups: ask the user in one line ("Want LinkedIn posts about it?"). Queue only on a yes.
+3. Queued briefs: hand each to the agent named in `to:`, highest priority and earliest `due:` first. Respect dependencies: copy before design, design before ads go live, approved messaging before launch assets.
+4. In unattended (scheduled) runs, complete at most 3 briefs and leave the rest `ready`.
 
-## 5. Report back
+## 5. Report back: one done message
 
-Short summary: what each agent did, where outputs are, what needs the user (approvals, assets, checks before publishing). For anything with numbers, point to the dashboard. End multi-step work by refreshing the HQ (`marketing-team:hq`).
+However many agents worked, the user gets **one** done message (conventions §5): what was made (one line), one link per deliverable (the Hub item), up to 3 "needs you" items, one suggested next step. Never list file paths, briefs created, or what each agent did internally. Rebuild the Hub before replying (conventions §6).
 
 ## Recurring routines
 

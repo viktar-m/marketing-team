@@ -34,4 +34,6 @@ If the session's Artifact tool lists a **Design System** type, also create the b
 
 ## Output
 
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
 `marketing/design/brand-kit.md` with the sections above (use tables for colours and type), the template files, the preview image, and a summary for the user: what was taken from their materials, what was proposed, and what they need to supply or approve.

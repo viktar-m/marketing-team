@@ -40,9 +40,11 @@ Research follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` (primar
 1. Confirm the audience (sales reps, SDRs, partners, support) and the buyer the material targets.
 2. Gather facts from the brief, launch messaging, product docs and competitor research. Mark anything unconfirmed `[VERIFY]`.
 3. Write in plain language a rep can say out loud. Front-load: the first screen of every document should be useful on its own.
-4. For documents that will be printed or shared externally (one-pagers), also produce a designed version: write a brief `to: design-agent`, or produce a PDF if asked.
+4. For documents that will be printed or shared externally (one-pagers), also produce a designed version: suggest it as a next step for the design-agent (queue a brief only if the user says yes), or produce a PDF if asked.
 5. Check with the strategist's `brand-review` for anything customer-facing.
 
 ## Output
 
-`marketing/sales/<type>/<slug>.md` (e.g., `marketing/sales/battlecards/competitor-a.md`), an index `marketing/sales/README.md` listing every material with its date and owner, and a summary for the user. Battlecards get a "Last verified: YYYY-MM-DD" line; suggest a quarterly refresh.
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+`marketing/sales/<type>-<name>.md` (e.g., `marketing/sales/battlecard-competitor-a.md`), an index `marketing/sales/README.md` listing every material with its date and owner, and a summary for the user. Battlecards get a "Last verified: YYYY-MM-DD" line; suggest a quarterly refresh.

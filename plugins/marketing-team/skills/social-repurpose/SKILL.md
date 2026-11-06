@@ -30,8 +30,10 @@ The source (path, URL or pasted text) and the platforms (default: all active pla
 
 ## Output
 
-Save to `marketing/content/social/YYYY-MM-DD-<source-slug>-repurpose/posts.md`:
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+Save to `marketing/social/<source-name>-posts.md`:
 - a schedule table: day | platform | format | angle | link?
 - each post, in the `social-post` output format
 
-Add the posts to the content inventory as one row (type `social`, title "Repurpose: <source title>"). If a weekly calendar exists for those weeks in `marketing/calendar/`, add the posts to it.
+If a weekly calendar exists for those weeks in `marketing/social/`, add the posts to it.

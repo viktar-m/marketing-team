@@ -12,7 +12,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md` and the brand brief first.
 - **Single page:** a URL the user gives.
 - **Section:** e.g. `/blog/` — sample up to 15 pages, favouring the most important (commercial pages and top traffic pages, if data is available).
 - **Site:** home page, the commercial pages in the brief, and a sample of up to 15 other pages.
-- **Recurring weekly run:** the commercial pages in the brief, plus pages published or refreshed in the last 30 days (from the inventory). Compare with the previous audit in `marketing/reports/` and focus on what changed.
+- **Recurring weekly run:** the commercial pages in the brief, plus pages published or refreshed in the last 30 days (from `marketing/index.md`). Compare with the previous audit in `marketing/research/` and focus on what changed.
 
 ## Data
 
@@ -57,11 +57,13 @@ Score each issue: **impact** (high / medium / low) × **effort** (low / medium /
 
 ## Output
 
-1. **Report** at `marketing/reports/YYYY-MM-DD-seo-audit.md`:
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+1. **Report** at `marketing/research/seo-audit-<month>.md`:
    - Summary: scope, data sources, overall health in three sentences, top 5 actions
    - Changes since the last audit (recurring runs)
    - Findings table: page | issue | impact | effort | fix
    - Quick wins the user can do in minutes (titles, meta descriptions, alt text) written out in full, ready to paste
    - What couldn't be checked and why
 2. **Dashboard** `marketing/dashboards/seo-audit.html` per `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`: health score tiles, issues by impact, clicks and position trends if data is connected, and the action list.
-3. **Briefs** (`to: web-content-agent`) for fixes that need writing — a refresh, a new section, a new page — using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`. At most 5 per run, highest priority first.
+3. **Proposed actions** — offer to queue them as briefs `to: web-content-agent` (only after the user agrees) for fixes that need writing — a refresh, a new section, a new page — using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`. At most 5 per run, highest priority first.

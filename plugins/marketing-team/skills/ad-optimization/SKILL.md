@@ -5,7 +5,7 @@ description: 'Analyse paid ad performance on Google Ads, LinkedIn Ads and Meta A
 
 # Ad optimisation
 
-Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketing/strategy/paid.md` (targets and guardrails), the campaign plans, and previous reports in `marketing/ads/reports/`.
+Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketing/strategy/paid.md` (targets and guardrails), the campaign plans, and previous reports in `marketing/ads/`.
 
 ## Data
 
@@ -20,7 +20,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketi
 3. **Google search terms:** irrelevant terms to add as negatives (exact or phrase, at the right level); converting terms not yet keywords to add; match-type issues.
 4. **Creatives:** winners and losers by CTR and conversion rate with enough volume to judge; fatigue (rising frequency with falling CTR on Meta/LinkedIn, typically after a few weeks); which angles win.
 5. **Audiences and placements:** segments, placements, devices, locations or times that clearly over- or under-perform.
-6. **Funnel:** if CTR is fine but conversion rate is poor, check the landing page (message match, speed, form length) and write a brief `to: web-content-agent` if needed.
+6. **Funnel:** if CTR is fine but conversion rate is poor, check the landing page (message match, speed, form length) and suggest it as a next step for the web-content-agent (queue a brief only if the user says yes) if needed.
 7. **Budget:** where to move money, within the strategy's guardrails (e.g., no more than ±20% budget change per campaign per week, to avoid resetting learning).
 
 ## Recommendations
@@ -31,6 +31,8 @@ A prioritised change list, each with: what to change, where, why (the number beh
 
 ## Output
 
-- `marketing/ads/reports/YYYY-MM-DD-ads-review.md`: summary (3–5 bullet findings), KPI table vs previous period and target, the change list, briefs created, data caveats
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+- `marketing/ads/ads-review-<month>.md`: summary (3–5 bullet findings), KPI table vs previous period and target, the change list, briefs created, data caveats
 - `marketing/dashboards/ads.html`: KPI tiles with deltas, spend vs conversions by campaign, CPA trend, top and bottom creatives, wasted spend — per `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`
-- Negative keyword lists and other bulk changes as CSV files ready to upload, in `marketing/ads/reports/YYYY-MM-DD-*.csv`
+- Negative keyword lists and other bulk changes as CSV files ready to upload, in `marketing/ads/<name>.csv`

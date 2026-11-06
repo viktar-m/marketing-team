@@ -19,7 +19,7 @@ Defaults: audience = the brief's main segment; length = 1,200–1,800 words; CTA
 2. **Research.**
    - Search the primary keyword and read the top 3–5 results. Note what they all cover (table stakes) and what they miss (your angle).
    - Gather facts from primary sources (official docs, original research, standards bodies) over aggregators. Keep the source URL for every fact.
-   - Check the content inventory and the site for our own related pages to link to.
+   - Check `marketing/index.md` and the site for our own related pages to link to.
 3. **Outline:** a working title, an intro that answers the question fast, 4–8 H2 sections in a logical order, H3s only where a section needs them, and a conclusion with the CTA.
 4. **Draft** in the brand voice:
    - The first 100 words say what the reader will get and give the short answer.
@@ -29,7 +29,7 @@ Defaults: audience = the brief's main segment; length = 1,200–1,800 words; CTA
    - Sentence-level clarity: active voice, specific verbs, no filler openings ("In today's fast-paced world…").
 5. **Optimise:** primary keyword in the title, H1, intro and at least one H2, naturally. Cover secondary keywords and related questions. Add 2–5 external links to credible sources.
 6. **Internal linking:** Run `marketing-team:internal-linking` (Steps 1–4): write the links out into the draft, and list the existing pages that should link to this article, with the exact edits.
-7. **Graphics:** write one brief `to: design-agent` for the cover image and any diagrams the article needs (purpose, message, sizes, placement).
+7. **Graphics:** describe the cover image and any diagrams the article needs (purpose, message, size, placement) in the notes, and offer to have the design agent make them (queue a brief only if the user says yes).
 8. **Self-review** with the checklist below. Fix, don't just note.
 
 ## Checklist
@@ -47,11 +47,21 @@ Defaults: audience = the brief's main segment; length = 1,200–1,800 words; CTA
 
 ## Output
 
-Save to `marketing/content/blog/YYYY-MM-DD-<slug>/article.md`:
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+Save to `marketing/web/<name>.md`:
 
 ```
 ---
-title: <SEO title, under ~60 characters>
+title: <article title>
+type: blog
+agent: web-content-agent
+status: draft
+date: YYYY-MM-DD
+summary: <one line>
+needs_you:
+  - <only real actions, e.g. "Check the [VERIFY] figure in section 3">
+seo_title: <under ~60 characters>
 meta_description: <under ~155 characters>
 slug: <url-slug>
 primary_keyword: <keyword>
@@ -65,7 +75,7 @@ word_count: <n>
 
 ---
 
-## Publishing notes
+## Notes for you
 - **Audience and angle:** <one line each>
 - **Internal linking:** links out (anchor → URL) and links in (page, current text, new text, anchor)
 - **Graphics:** design brief path; alt text for each image
@@ -74,4 +84,4 @@ word_count: <n>
 - **To verify before publishing:** <list, or "nothing">
 ```
 
-Then add a row to the content inventory and, if you worked from a brief, close it.
+If you worked from a brief, close it. Rebuild the Hub and reply with the done message (conventions §5–6).

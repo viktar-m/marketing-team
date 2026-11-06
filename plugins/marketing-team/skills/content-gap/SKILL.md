@@ -15,7 +15,7 @@ Competitors from the brief (or ones the user names), and the topic area to compa
 
 ## Workflow
 
-1. **Map our coverage.** List our pages on the topic area from the sitemap, the blog index and `marketing/content-inventory.md`: title, URL, primary topic, date.
+1. **Map our coverage.** List our pages on the topic area from the sitemap, the blog index and `marketing/index.md`: title, URL, primary topic, date.
 2. **Map each competitor's coverage.** From their sitemap, blog and resource sections, and web searches for the brief's target keywords: what topics, questions and page types (guides, comparisons, templates, tools, glossaries, use-case pages) do they have?
 3. **Find four kinds of gap:**
    - **Missing:** a topic they cover and we don't
@@ -27,10 +27,12 @@ Competitors from the brief (or ones the user names), and the topic area to compa
 
 ## Output
 
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
 1. **Dashboard** `marketing/dashboards/content-gap.html` per `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`: coverage by topic, us vs each competitor, gaps sized by relevance and demand.
-2. **Report** at `marketing/reports/YYYY-MM-DD-content-gap.md`:
+2. **Report** at `marketing/research/content-gap-<month>.md`:
    - Summary: competitors compared, data sources, top 5 gaps and the action for each
    - Gap table: gap | type (missing / outranked / thin / format) | competitor example URL | our page (if any) | relevance | demand | effort | action
    - Topics where we're ahead — worth protecting
 3. Run `keyword-research` on the top gaps when primary keywords aren't obvious.
-4. **Briefs** (`to: web-content-agent`) for the top gaps (at most 5), using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`. Refresh briefs for thin or stale pages; new-page or blog briefs for missing topics.
+4. **Proposed actions** — offer to queue them as briefs `to: web-content-agent` (only after the user agrees) for the top gaps (at most 5), using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`. Refresh briefs for thin or stale pages; new-page or blog briefs for missing topics.

@@ -1,6 +1,6 @@
 ---
 name: workspace-setup
-description: 'Set up a new marketing workspace for a product, company or client in an empty (or partly set-up) repository or folder - session instructions (CLAUDE.md), folder structure, brand brief template, content inventory, AI visibility workflow and an empty Marketing HQ - then start the brand brief. Use for "set up a marketing workspace for X", a new client or product, an empty repo, or when a workspace is missing its CLAUDE.md or folders.'
+description: 'Set up a new marketing workspace for a product, company or client in an empty (or partly set-up) repository or folder - session instructions (CLAUDE.md), folder structure, brand brief template, AI visibility workflow and the Marketing Hub - then start the brand brief. Use for "set up a marketing workspace for X", a new client or product, an empty repo, or when a workspace is missing its CLAUDE.md or folders.'
 ---
 
 # Workspace setup

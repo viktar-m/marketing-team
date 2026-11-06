@@ -32,14 +32,16 @@ Two parts work together:
    - Which sources are cited most for the questions we lose? Third-party sites (review sites, communities, publications, Wikipedia, YouTube) are where mentions are earned.
    - Is our own site cited? If not, which of our pages should answer that question and doesn't — or doesn't answer it clearly enough to be quoted?
    - Are any answers wrong about us (pricing, features, positioning)?
-5. **Act.** Write up to 5 briefs, highest impact first:
+5. **Act.** Propose up to 5 actions, highest impact first, and offer to queue them as briefs (only after the user agrees):
    - `to: web-content-agent` — pages that directly answer lost questions in quotable form: a clear one-paragraph answer, explicit entity names, comparison tables, FAQs, up-to-date facts, structured data
    - `to: strategist` — earned-media and community opportunities on the most-cited third-party sources (reviews, listings, guest content, community answers)
    - `to: gtm-agent` or `to: web-content-agent` — corrections where AI answers are wrong (fix the source pages they rely on)
 
 ## Output
 
-- Report: `marketing/reports/YYYY-MM-DD-ai-visibility.md` — headline numbers and change vs the previous period (visibility, share of voice, citation rate, average position, sentiment), wins and losses by question, top cited sources, errors found, and the actions with brief paths
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+- Report: `marketing/research/ai-visibility-<month>.md` — headline numbers and change vs the previous period (visibility, share of voice, citation rate, average position, sentiment), wins and losses by question, top cited sources, errors found, and the actions with brief paths
 - Dashboard: `marketing/dashboards/ai-visibility.html` — share it or open it as an artifact when the environment supports that (see `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`)
 
 ## Caveats to state in reports

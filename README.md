@@ -2,7 +2,7 @@
 
 A seven-agent marketing team that plugs into Claude. Each agent owns one job: strategy, SEO and AI visibility, web content, social and video, design, paid ads, and go-to-market. They all read one **brand brief**, follow one set of **strategy rules**, and hand work to each other through **briefs**. You can set up the same team for any company by swapping the brief.
 
-![Marketing HQ dashboard](docs/images/marketing-hq.png)
+![Marketing Hub](docs/images/marketing-hub.png)
 
 ```
 You: "We launch v2 on the 20th."
@@ -28,7 +28,7 @@ Team lead ─▶ GTM agent       tiers the launch, writes messaging, builds the 
 | **Ads** | Google, LinkedIn and Meta campaign plans, ad copy and creative, optimisation | `ad-campaign` · `ad-creative` · `ad-optimization` |
 | **GTM & sales** | Product and market analysis, launches, sales enablement | `gtm-analysis` · `launch-plan` · `sales-enablement` |
 
-Team skills: **`team-lead`** routes requests and runs the routines · **`workspace-setup`** turns an empty repo into a ready workspace · **`brand-setup`** writes the brand brief · **`hq`** shows the Marketing HQ dashboard.
+Team skills: **`team-lead`** routes requests and runs the routines · **`workspace-setup`** turns an empty repo into a ready workspace · **`brand-setup`** writes the brand brief · **`hq`** shows the Marketing Hub.
 
 ## Highlights
 
@@ -47,7 +47,7 @@ Every article, new page and refresh suggests the links it should contain, and li
 When your Claude account offers them, the designer makes graphics as editable **Claude Design** canvases (you tweak and export them yourself), keeps the brand kit as a **Claude Design System** that every design uses, and the social & video agent can make videos in **Claude Motion** from its video brief. Without them, the team falls back to rendered PNGs and a paste-ready Motion brief. Links to everything that lives in Claude are kept in the workspace's `marketing/artifacts.md` and shown on the HQ.
 
 ### Visual output
-Reports come with self-contained dashboards (light and dark mode, colour-blind-safe palette, tooltips, a table view). The Marketing HQ shows the team's work as a board: open briefs by status and agent, deadlines, output per week, AI share of voice and strategy review dates. The designer renders graphics to PNG at exact platform sizes.
+Reports come with self-contained dashboards (light and dark mode, colour-blind-safe palette, tooltips, a table view). The **Marketing Hub** is the one page you open: what needs you, the work queue, and every deliverable with a built-in reader, plus links to dashboards and designs. The designer renders graphics to PNG at exact platform sizes.
 
 ## How it works
 
@@ -55,7 +55,7 @@ Reports come with self-contained dashboards (light and dark mode, colour-blind-s
 2. **Strategy rules:** `marketing/strategy/*.md` are short, checkable rules written by the strategist. Every agent reads the ones for its channel.
 3. **Routing by description:** Claude matches each request to an agent and skill. Ask in plain words, or call a skill directly, e.g. `/marketing-team:seo-audit`.
 4. **Briefs as handoffs:** agents write briefs to `marketing/briefs/`, addressed to the agent that should act on them. The team lead passes them on in priority order.
-5. **Team memory:** `marketing/content-inventory.md` logs everything the team produces.
+5. **Team memory:** every deliverable carries a short header (status, summary, what needs you); the Hub indexes them in `marketing/index.md`.
 6. **Routines:** weekly AI visibility, SEO, social and ads reviews, plus monthly gap and refresh runs, run as scheduled tasks. See [docs/scheduling.md](docs/scheduling.md).
 
 Details: [docs/architecture.md](docs/architecture.md).
@@ -78,23 +78,25 @@ Details: [docs/architecture.md](docs/architecture.md).
 2. In Claude Code (the Code tab of the desktop app, or the terminal), start a session in that repo. In the Code tab: New → Cloud → choose the repo.
 3. Type **"Set up a marketing workspace for <product>. Website: <url>."** The team creates the workspace (folders, session instructions, dashboard), drafts the brand brief from the website, and asks you a few questions.
 4. Next: "Write our marketing strategy", then "Set up our brand kit" (add your logo and screenshots to `marketing/design/assets/` first), then "Set up AI visibility tracking" (see [docs/ai-visibility.md](docs/ai-visibility.md)).
-5. **Start a new session for each task**, in the same repo: "Show me the HQ", "Work on the homepage refresh brief", "Plan next week's posts". The repo is the team's memory, so every session starts with full context.
+5. **Start a new session for each task**, in the same repo: "Show me the Hub", "Work on the homepage refresh brief", "Plan next week's posts". The repo is the team's memory, so every session starts with full context.
 6. When you're ready, schedule the routines ([docs/scheduling.md](docs/scheduling.md)).
 
 To try the team without a real product, set up a workspace for the fictional sample in [`templates/sample-brand-brief.md`](plugins/marketing-team/templates/sample-brand-brief.md).
 
 ## Workspace
 
-The team works in a `marketing/` folder. That can be a local folder or a **private git repository**, which scheduled runs and the daily AI visibility workflow can update without your computer. This public repo git-ignores `marketing/`: the framework is public, and your brand data stays private.
+The team works in a `marketing/` folder — a local folder or a **private git repository** (scheduled runs and the daily AI visibility workflow can update it without your computer). This public repo git-ignores `marketing/`: the framework is public, your brand data stays private.
 
 ```
 marketing/
-├── brand-brief.md        strategy/          briefs/
-├── content-inventory.md  campaigns/         launches/
-├── content/              design/            ads/
-├── sales/                ai-visibility/     site/
-├── reports/              calendar/          dashboards/  (hq.html)
+├── hub.html          ← the Marketing Hub: open this
+├── brand-brief.md    strategy/
+├── web/  social/  video/  design/  ads/  sales/
+├── launches/  campaigns/  research/
+└── queue/            briefs waiting for an agent
 ```
+
+**How the team keeps it usable:** every task produces one deliverable file (a short header — status, summary, what needs you — then the usable content first), the reply is a short "done" message with one link, and briefs exist only for follow-up work you agreed to. The **Marketing Hub** shows what needs you, the queue, and every deliverable with a built-in reader.
 
 ## Design principles
 
@@ -113,7 +115,7 @@ marketing/
 - [ ] Email agent: newsletters, nurture and onboarding sequences
 - [ ] Analytics agent: cross-channel performance reports
 - [ ] Instagram and YouTube platform guides
-- [ ] Interactive HQ with filters and drill-down
+- [ ] Approve and comment on work directly in the Hub
 
 ## License
 MIT. See [LICENSE](LICENSE).

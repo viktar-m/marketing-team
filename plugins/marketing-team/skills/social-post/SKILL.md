@@ -27,7 +27,7 @@ Write each platform's version natively. Don't paste the same text everywhere —
 3. **Write the body** in the brand voice, following the platform guide's format.
 4. **Close with one CTA** suited to the platform goal in the brief: comment, click, save, sign up. One ask, not three.
 5. **Add hashtags** per the platform guide, starting with the brief's own hashtags.
-6. **Plan the visual:** image, carousel or short video, with a one-line creative description and alt text. For anything beyond a photo the user supplies, write a brief `to: design-agent` (one brief for all posts in the request) with the platform, size, on-image text and message.
+6. **Plan the visual:** image, carousel or short video, with a one-line creative description and alt text. For anything beyond a photo the user supplies, suggest it as a next step for the design-agent (queue a brief only if the user says yes) (one brief for all posts in the request) with the platform, size, on-image text and message.
 7. **Self-review:**
    - [ ] The hook works on its own, before the "see more" cut
    - [ ] One clear point and one CTA
@@ -38,7 +38,9 @@ Write each platform's version natively. Don't paste the same text everywhere —
 
 ## Output
 
-Save to `marketing/content/social/YYYY-MM-DD-<slug>/posts.md`, one section per platform:
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+Save to `marketing/social/<name>.md`, one section per platform:
 
 ```
 ## LinkedIn
@@ -53,4 +55,4 @@ Save to `marketing/content/social/YYYY-MM-DD-<slug>/posts.md`, one section per p
 ...
 ```
 
-Add a row to the content inventory (type `social`). Offer 2 alternative hooks for the user's preferred platform.
+Offer 2 alternative hooks for the user's preferred platform.

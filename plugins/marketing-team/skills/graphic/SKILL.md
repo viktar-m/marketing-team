@@ -51,7 +51,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/render_graphics.py marketing/design/graphi
 
 1. **One message per graphic.** Write the headline (12 words or fewer for social), any supporting line, and the CTA before designing. Get the copy from the brief; don't invent claims.
 2. **Choose the template** that fits (tip card, announcement, feature with screenshot, carousel slide, cover, ad). For a campaign or launch, design one master layout and derive every size and variant from it.
-3. **Build** the HTML in `marketing/design/graphics/YYYY-MM-DD-<slug>/`, one file per design (carousels: one file per slide, numbered `01-…`, `02-…`).
+3. **Build** the HTML in `marketing/design/graphics/<name>/`, one file per design (carousels: one file per slide, numbered `01-…`, `02-…`).
 4. **Render** with the script, then **look at every PNG** (open the images): text fits and isn't cropped, contrast is readable, nothing overlaps, it's legible at phone size (imagine it at 400 px wide), the logo is present but not dominant, sizes are exact.
 5. **Fix and re-render** until it passes. Then build the contact sheet.
 6. **Carousels for LinkedIn:** combine the slide PNGs into a PDF (`python3 -c` with Pillow: `images[0].save('carousel.pdf', save_all=True, append_images=images[1:])`).
@@ -64,6 +64,8 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/render_graphics.py marketing/design/graphi
 - Accessibility: write alt text for every graphic.
 
 ## Output
+
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
 
 **Design canvas:** the canvas link, a one-line list of artboards (name, size), alt text per graphic, placeholders the user must fill, and the `marketing/artifacts.md` row. Remind the user they can export PNG/PDF from the canvas.
 

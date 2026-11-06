@@ -24,7 +24,7 @@ A seed: a topic, product feature, competitor, URL or list of gaps from `content-
 3. **Estimate demand and difficulty.** Use tool data when connected. Otherwise rate demand and difficulty as high / medium / low from evidence (strength of the ranking sites, how many results directly answer the query) and label them as estimates.
 4. **Check relevance to the business.** Score 1–3: does someone searching this plausibly need what we sell? Drop anything scoring 1 unless it supports a priority topic.
 5. **Cluster.** Group keywords one page could rank for together (same intent, overlapping results). Name each cluster by its primary keyword.
-6. **Map clusters to pages.** For each cluster: does an existing page cover it (check the inventory and the site)? → refresh brief. No page? → new page or blog brief. Choose blog for broad informational clusters, page for specific questions and product use cases.
+6. **Map clusters to pages.** For each cluster: does an existing page cover it (check `marketing/index.md` and the site)? → refresh brief. No page? → new page or blog brief. Choose blog for broad informational clusters, page for specific questions and product use cases.
 
 ## Prioritise
 
@@ -32,9 +32,11 @@ Rank clusters by business relevance first, then demand, then ease. A small, high
 
 ## Output
 
-1. **Report** at `marketing/reports/YYYY-MM-DD-keyword-research-<topic>.md`:
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+1. **Report** at `marketing/research/keywords-<topic>.md`:
    - Summary: seed, data sources, top 5 clusters and the recommended action for each
    - Cluster table: cluster | primary keyword | secondary keywords | intent | demand | difficulty | relevance | existing page | action
    - Full keyword list as an appendix
-2. **Briefs** (`to: web-content-agent`) for the top clusters (at most 5), using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`.
+2. **Proposed actions** — offer to queue them as briefs `to: web-content-agent` (only after the user agrees) for the top clusters (at most 5), using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`.
 3. If any recommended primary keywords belong in the brand brief's target keywords, suggest adding them.

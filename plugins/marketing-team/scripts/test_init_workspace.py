@@ -12,7 +12,7 @@ class InitWorkspace(unittest.TestCase):
             iw.main(["--root", d, "--product", "Test Co", "--website", "https://test.example"])
             root = Path(d)
             for rel in ["CLAUDE.md", "README.md", ".gitignore", ".github/workflows/ai-visibility.yml",
-                        "marketing/brand-brief.md", "marketing/content-inventory.md", "marketing/briefs/.gitkeep"]:
+                        "marketing/brand-brief.md", "marketing/hub.html", "marketing/index.md", "marketing/queue/.gitkeep", "marketing/web/.gitkeep"]:
                 self.assertTrue((root / rel).exists(), rel)
             claude = (root / "CLAUDE.md").read_text()
             self.assertIn("Test Co (https://test.example)", claude)

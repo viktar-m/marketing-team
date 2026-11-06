@@ -11,7 +11,7 @@ Research follows `${CLAUDE_PLUGIN_ROOT}/templates/research-standards.md` (primar
 
 ## Inputs
 
-What the campaign is for, rough dates, and budget if any. For product launches, read the launch kit in `marketing/launches/<slug>/` — the gtm-agent owns launch messaging; the campaign builds on it.
+What the campaign is for, rough dates, and budget if any. For product launches, read the launch kit in `marketing/launches/<name>/` — the gtm-agent owns launch messaging; the campaign builds on it.
 
 ## Workflow
 
@@ -23,10 +23,12 @@ What the campaign is for, rough dates, and budget if any. For product launches, 
 6. **Timeline.** Phases: prepare → tease → launch → sustain → last chance → wrap. Dates for each asset being ready and going live. Work back from launch day; leave time for review.
 7. **Budget.** Split by channel when there's paid spend; keep a test reserve.
 8. **Measurement.** Tracking (UTM convention: `utm_campaign=<slug>`), what to report and when, and the decision points (e.g., "day 3: shift budget to the best ad set").
-9. **Briefs.** One brief per deliverable using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`, with `campaign: <slug>` and a `due:` date — to web-content-agent, social-agent, design-agent (one brief for the whole visual set, so it stays consistent), ads-agent, gtm-agent. Highest priority first; no 5-brief limit for campaigns, but group small items.
+9. **Briefs, after approval.** Once the user approves the plan: one brief per deliverable using `${CLAUDE_PLUGIN_ROOT}/templates/brief.md`, with `campaign: <slug>` and a `due:` date — to web-content-agent, social-agent, design-agent (one brief for the whole visual set, so it stays consistent), ads-agent, gtm-agent. Highest priority first; no 5-brief limit for campaigns, but group small items.
 
 ## Output
 
-- `marketing/campaigns/<slug>/plan.md`: summary box (objective, dates, offer, core message, budget), concept, channel plan table (channel · role · assets · owner · due), timeline, measurement, risks and approvals
-- `marketing/campaigns/<slug>/timeline.html`: a visual timeline (Gantt-style, one row per asset, coloured by owner agent) following `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+- `marketing/campaigns/<name>/plan.md`: summary box (objective, dates, offer, core message, budget), concept, channel plan table (channel · role · assets · owner · due), timeline, measurement, risks and approvals
+- `marketing/campaigns/<name>/timeline.html`: a visual timeline (Gantt-style, one row per asset, coloured by owner agent) following `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`
 - The briefs, and a summary for the user with the decisions they need to make

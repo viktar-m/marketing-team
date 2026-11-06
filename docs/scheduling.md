@@ -13,7 +13,7 @@ Routines are defined in the `team-lead` skill. Set each one up as a scheduled ta
 | `monthly-refresh` | 15th | The 3 pages most in need of a refresh, refreshed |
 | `quarterly-strategy` | first week of the quarter | Strategy files reviewed and updated against results |
 
-Every routine ends by refreshing the Marketing HQ dashboard.
+Every routine ends by refreshing the Marketing Hub.
 
 ## Prompt pattern
 
@@ -23,4 +23,4 @@ Every routine ends by refreshing the Marketing HQ dashboard.
 
 - Nothing is published, posted or changed in ad accounts automatically. Routines produce drafts, reports and recommendations for you to review.
 - Connect Search Console, Analytics and your ad platforms before scheduling the SEO and ads routines.
-- If you're away for a while, briefs stay `ready` and the next run picks them up. The HQ shows anything overdue.
+- If you're away for a while, briefs stay `ready` and the next run picks them up. The Hub shows anything overdue.

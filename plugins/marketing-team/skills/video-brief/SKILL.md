@@ -25,7 +25,7 @@ A good video brief does two jobs: it gets the right raw material collected, and 
    - **Approvals:** customer logos or quotes need permission
    Mark each as **must have** or **nice to have**, and suggest a motion-graphics fallback for nice-to-haves (e.g., an animated mock-up instead of a real recording).
 
-Save to `marketing/content/video/YYYY-MM-DD-<slug>/plan.md` and tell the user the must-have list in one short message. Ask them to drop the files into `marketing/content/video/YYYY-MM-DD-<slug>/assets/`. If everything needed already exists, go straight to Phase 2.
+Save to `marketing/video/<name>/plan.md` and tell the user the must-have list in one short message. Ask them to drop the files into `marketing/video/<name>/assets/`. If everything needed already exists, go straight to Phase 2.
 
 ## Phase 2 — Motion brief
 
@@ -63,4 +63,6 @@ If there's no Motion type, deliver `motion-brief.md` and tell the user how to us
 
 ## Output
 
-`plan.md` (Phase 1), `motion-brief.md` (Phase 2), and a content inventory row (type `video`). Tell the user how to use it: open Claude's Motion feature, attach the files listed under "Assets attached", and paste the brief. For cut-downs (other lengths or ratios), add one short section per variant listing which scenes to keep.
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+`plan.md` (Phase 1), `motion-brief.md` (Phase 2). Tell the user how to use it: open Claude's Motion feature, attach the files listed under "Assets attached", and paste the brief. For cut-downs (other lengths or ratios), add one short section per variant listing which scenes to keep.

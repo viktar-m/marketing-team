@@ -6,8 +6,7 @@ Creates, without overwriting anything that already exists:
   .github/workflows/ai-visibility.yml        daily AI visibility tracker (schedule off by default)
   marketing/...                              the folder structure from the team conventions
   marketing/brand-brief.md                   the brand brief template, ready for brand-setup
-  marketing/content-inventory.md             empty inventory with its header
-  marketing/dashboards/hq.html               an empty Marketing HQ
+  marketing/hub.html, marketing/index.md      the Marketing Hub and the work index
 
 Usage
   python3 init_workspace.py --root . --product "Acme Pantry" [--website https://acme.example] [--schedule on]
@@ -24,10 +23,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 TEMPLATES = HERE.parent / "templates"
-FOLDERS = ["strategy", "briefs", "campaigns", "launches", "site", "content", "design/assets", "ads", "sales",
-           "ai-visibility", "reports", "calendar", "dashboards"]
-INVENTORY_HEADER = ("| Date | Type | Title | Primary keyword | Location / URL | Agent | Status |\n"
-                    "|------|------|-------|-----------------|----------------|-------|--------|\n")
+FOLDERS = ["strategy", "web", "social", "video", "design/assets", "ads", "sales", "launches", "campaigns",
+           "research", "queue", "site", "ai-visibility", "dashboards"]
 GITIGNORE = ".env\n.env.*\n__pycache__/\n.DS_Store\n*.tmp\n"
 SCHEDULE_ON = '''  schedule:
     - cron: "17 5 * * *"   # daily at 05:17 UTC
@@ -87,7 +84,6 @@ def main(argv=None) -> int:
     if a.website:
         brief = brief.replace("- **Website:** main URL", f"- **Website:** {a.website}", 1)
     write("marketing/brand-brief.md", brief)
-    write("marketing/content-inventory.md", INVENTORY_HEADER)
     write("marketing/artifacts.md", "# Work in Claude\n\nDesigns, the design system, videos and dashboards that live in Claude.\n\n"
           "| Date | Type | Title | Link | Brief / campaign | Agent |\n|------|------|-------|------|------------------|-------|\n")
 
@@ -97,12 +93,12 @@ def main(argv=None) -> int:
         if not any(d.iterdir()):
             (d / ".gitkeep").write_text("")
 
-    hq = root / "marketing" / "dashboards" / "hq.html"
-    if not hq.exists():
-        subprocess.run([sys.executable, str(HERE / "hq.py"), "--workspace", str(root / "marketing"),
-                        "--out", str(hq)], check=False, stdout=subprocess.DEVNULL)
-        if hq.exists():
-            created.append("marketing/dashboards/hq.html")
+    hub = root / "marketing" / "hub.html"
+    existed = hub.exists()
+    subprocess.run([sys.executable, str(HERE / "hub.py"), "--workspace", str(root / "marketing")],
+                   check=False, stdout=subprocess.DEVNULL)
+    if hub.exists() and not existed:
+        created += ["marketing/hub.html", "marketing/index.md"]
 
     print(f"Workspace for {a.product} at {root}")
     print("Created:" if created else "Created: nothing new")

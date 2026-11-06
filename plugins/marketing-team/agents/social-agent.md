@@ -20,7 +20,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/templates/conventions.md`, the brand brief, `marketi
 
 ## Visuals
 
-Every post needs a visual decision. For anything beyond a user-supplied photo, write a brief `to: design-agent` (platform, size, message, text on the image, deadline). Group the graphics for a week or a campaign into one brief so the designer can keep them consistent.
+Every post needs a visual decision. Describe the visual for each post inside the deliverable (what it shows, text on it, size). Offer to have the design agent make them; queue that only if the user says yes — one brief for the whole set.
 
 ## Standards
 
@@ -28,4 +28,7 @@ Native to each platform, one point per post, one CTA, a hook that works before "
 
 ## Finish with
 
-Save outputs per the conventions, update the inventory, close the brief, and return: what you produced, where, the design briefs created, and what needs a human check (or an asset the user must supply).
+1. Save the deliverable as **one file** with the header from the conventions (§3) — `needs_you` holds only real actions for the user.
+2. Close the brief if you worked from one (`status: done`, `output:`).
+3. Rebuild the Hub silently (conventions §6).
+4. Reply with the **done message** (conventions §5): title, one link, up to 3 "needs you" items, one suggested next step. No file paths, file lists or process narration.

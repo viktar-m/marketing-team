@@ -38,8 +38,10 @@ If the product's market, competitors or positioning haven't been analysed yet, r
 4. **Asset checklist** — one row per asset: asset · channel · owner agent · due · status. Typical Tier 1 set: landing/feature page and page refreshes (web-content-agent); launch blog post (web-content-agent); release video and social set (social-agent); graphics set and ad creatives (design-agent); paid plan (ads-agent); campaign around the launch (strategist); sales one-pager, battlecard update, demo script, FAQ, customer email (you, via `sales-enablement`).
 5. **Readiness.** Sales and support briefed, docs updated, pricing and availability confirmed, website updated (navigation, pricing page, comparison pages), analytics events in place.
 6. **Success metrics.** 2–4 measurable goals (sign-ups, adoption of the feature, pipeline, traffic, AI visibility for the new feature's questions) and when to review them.
-7. **Briefs.** One brief per asset with `campaign: <launch-slug>` and `due:` date. Messaging file path in every brief.
+7. **Briefs, after approval.** Once the user approves the plan and messaging: one brief per asset with `campaign: <launch-slug>` and `due:` date. Messaging file path in every brief.
 
 ## Output
 
-`marketing/launches/<slug>/`: `plan.md` (tier, summary, timeline, asset checklist, readiness, metrics), `messaging.md`, `timeline.html` (visual timeline per `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`, rows by asset, coloured by owner agent, launch day marked), and the briefs. After launch, add `review.md`: results vs metrics, what worked, what to change next time.
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+`marketing/launches/<name>/`: `plan.md` (tier, summary, timeline, asset checklist, readiness, metrics), `messaging.md`, `timeline.html` (visual timeline per `${CLAUDE_PLUGIN_ROOT}/templates/dashboards.md`, rows by asset, coloured by owner agent, launch day marked), and the briefs. After launch, add `review.md`: results vs metrics, what worked, what to change next time.

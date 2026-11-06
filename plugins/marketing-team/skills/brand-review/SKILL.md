@@ -40,7 +40,9 @@ For "ship with fixes", apply the fixes yourself when the deliverable is a text f
 
 ## Output
 
-`marketing/reports/YYYY-MM-DD-review-<slug>.md`:
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
+
+`marketing/research/review-<name>.md`:
 
 ```
 Verdict: Ship | Ship with fixes | Revise

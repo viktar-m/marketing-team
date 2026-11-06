@@ -33,7 +33,7 @@ Target length: 500–1,000 words. Shorter is better if the question is fully ans
 3. **Write** to the structure above in the brand voice.
 4. **Add metadata:** SEO title (under ~60 characters), meta description (under ~155), slug, and the schema types to use (FAQPage, HowTo, Product or SoftwareApplication as fitting). Include the FAQ schema as JSON-LD.
 5. **Internal linking:** Run `marketing-team:internal-linking` — links out inside the copy and the Related links block, plus the existing pages that should link to this new page, with exact edits. A new page nobody links to is hard to find for readers and search engines.
-6. **Suggest one graphic** that makes the answer clearer (diagram, comparison table image, annotated screenshot) with alt text, and write it as a brief `to: design-agent`.
+6. **Suggest one graphic** that makes the answer clearer (diagram, comparison table image, annotated screenshot) with alt text, and offer to have the design agent make it (queue a brief only if the user says yes).
 7. **Self-review:**
    - [ ] Someone who reads only the H1 and direct answer gets what they came for
    - [ ] One question per page; tangents moved to related links
@@ -44,8 +44,11 @@ Target length: 500–1,000 words. Shorter is better if the question is fully ans
 
 ## Output
 
-Save to `marketing/content/pages/YYYY-MM-DD-<slug>/page.md`:
-- **Part 1 — Page copy:** front matter (title, meta_description, slug, primary_keyword), then the page exactly as it should be published
-- **Part 2 — Publishing notes:** target query and intent, internal linking (links out; links in with exact edits), graphic brief path, JSON-LD, items to verify
+Every file you save starts with the header from the conventions (§3: title, type, agent, status, date, summary, needs_you). Finish with the done message (§5) — no file paths in the reply.
 
-Then add a row to the content inventory and, if you worked from a brief, close it.
+Save to `marketing/web/<name>.md`:
+- **Header** per conventions §3 (type `page`) plus `seo_title`, `meta_description`, `slug`, `primary_keyword`
+- **The page copy** exactly as it should be published — first
+- **## Notes for you:** target query and intent, internal linking (links out; links in with exact edits), graphic brief path, JSON-LD, items to verify
+
+If you worked from a brief, close it. Rebuild the Hub and reply with the done message (conventions §5–6).
